@@ -98,7 +98,7 @@ function HeroSection() {
         </div>
         <div className="mt-5 flex flex-col items-center leading-tight">
           <div ref={titleanim} >
-            <span className=" text-5xl sm:text-8xl font-white">
+            <span className=" text-5xl sm:text-8xl text-white">
               Craft Your
             </span>
           </div>
@@ -124,4 +124,5 @@ function HeroSection() {
 }
 
 export default HeroSection
+
 
