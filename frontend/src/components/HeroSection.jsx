@@ -103,7 +103,7 @@ function HeroSection() {
             </span>
           </div>
           <div ref={titleanimesecond} className="mt-4">
-            <span className=" text-xl sm:text-4xl font-medium">
+            <span className=" text-xl sm:text-4xl font-medium text-white">
               Own Coding Challenges
             </span>
           </div>
@@ -124,5 +124,6 @@ function HeroSection() {
 }
 
 export default HeroSection
+
 
 
