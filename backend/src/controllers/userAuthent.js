@@ -58,19 +58,19 @@ const register = async (req, res) => {
             role: user.role,
         };
 
-        // Set cookie with proper options
+        // Set cookie with proper options for cross-origin
         res.cookie('token', token, {
-            maxAge: 60 * 60 * 1000, // 1 hour
-            httpOnly: true, // Security: prevent XSS
-            secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-            sameSite: 'strict' // CSRF protection
+            maxAge: 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
         });
 
         // Send success response
         res.status(201).json({
             success: true,
             user: userResponse,
-            message: "User registered successfully" // Fixed typo
+            message: "User registered successfully"
         });
 
     } catch (err) {
@@ -137,15 +137,22 @@ const login = async (req, res) => {
             process.env.JWT_KEY,
             { expiresIn: 60 * 60 });
 
-        res.cookie('token', token, { maxAge: 60 * 60 * 1000 });
+        // Set cookie with proper options for cross-origin
+        res.cookie('token', token, {
+            maxAge: 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+
         res.status(201).json({
             user: reply,
-            message: "Logged In Succesfully"
+            message: "Logged In Successfully"
         })
     }
     catch (err) {
         res.status(401).json({
-            error: "Gaand mara le bhadwe"
+            error: "Invalid credentials"
         });
     }
 }
@@ -159,10 +166,9 @@ const logout = async (req, res) => {
 
         await redisClient.set(`token:${token}`, 'Blocked');
         await redisClient.expireAt(`token:${token}`, payload.exp);
-        //    Token add kar dunga Redis ke blockList
-        //    Cookies ko clear kar dena.....
+        
         res.cookie("token", null, { expires: new Date(Date.now()) });
-        res.send("Logged Out Succesfully");
+        res.send("Logged Out Successfully");
     }
     catch (err) {
         res.status(503).send("Error: " + err);
@@ -176,7 +182,6 @@ const adminRegister = async (req, res) => {
         const { firstName, emailId, password } = req.body;
 
         req.body.password = await bcrypt.hash(password, 10);
-        //
 
         const user = await User.create(req.body);
         const token = jwt.sign({
@@ -187,7 +192,15 @@ const adminRegister = async (req, res) => {
                 specialUsage: 0
             }
         }, process.env.JWT_KEY, { expiresIn: 60 * 60 });
-        res.cookie('token', token, { maxAge: 60 * 60 * 1000 });
+
+        // Set cookie with proper options for cross-origin
+        res.cookie('token', token, {
+            maxAge: 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+
         res.status(201).send("User Registered Successfully");
     }
     catch (err) {
