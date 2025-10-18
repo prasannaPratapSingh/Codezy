@@ -73,8 +73,8 @@ const CompanySection = () => {
 
     return (
         <>
-            <h2 ref={headanime} className='text-2xl sm:text-5xl font-bold max-w-6xl mx-auto text-center mt-10 sm:mt-20 sm:mb-2 '>ACE YOUR TECHNICAL INTERVIEWS</h2>
-            <h1 ref={subheadanime} className='sm:text-xl text-center italic font-light'>Get Hired by Top Tech Companies</h1>
+            <h2 ref={headanime} className='text-2xl sm:text-5xl font-bold max-w-6xl mx-auto text-center mt-10 sm:mt-20 sm:mb-2 text-white'>ACE YOUR TECHNICAL INTERVIEWS</h2>
+            <h1 ref={subheadanime} className='sm:text-xl text-center italic font-light text-white'>Get Hired by Top Tech Companies</h1>
             <div ref={logoanime} className="flex max-w-xl sm:max-w-4xl mx-auto justify-between pt-2 pl-10 pr-10 mt-5 pb-20">
                 {logoarray.map((dets, index) => (
                     <img src={dets.imageUrl}
@@ -88,3 +88,4 @@ const CompanySection = () => {
 }
 
 export default CompanySection
+
