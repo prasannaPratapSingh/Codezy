@@ -19,6 +19,8 @@ app.use(cookieParser());
 app.use(cors({
     origin: 'https://final-code-frontend.onrender.com',
     credentials: true,
+    sameSite: 'none',
+    secure: true
 }))
 
 app.use('/user', authRouter);
