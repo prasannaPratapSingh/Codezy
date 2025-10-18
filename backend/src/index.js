@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'https://final-code-frontend.onrender.com',
+    origin: 'https://codezy-6y04.onrender.com',
     credentials: true,
     sameSite: 'none',
     secure: true
