@@ -30,11 +30,11 @@ const Navbar = () => {
           <span>Codezy</span>
         </NavLink>
       </div>
-      <div ref={buttonanime} className='flex justify-center items-center text-white'>
-        <button className='sm:text-xl p-2 btn bg-transparent border-none shadow-none '>
+      <div ref={buttonanime} className='flex justify-center items-center'>
+        <button className='sm:text-xl p-2 btn bg-transparent border-none shadow-none text-white'>
           <NavLink to={'/login'}>Login</NavLink>
         </button>
-        <button className='sm:text-xl p-2 btn bg-transparent border-none shadow-none'>
+        <button className='sm:text-xl p-2 btn bg-transparent border-none shadow-none text-white'>
           <NavLink to={'/signup'}>Signup</NavLink>
         </button>
       </div>
@@ -43,4 +43,5 @@ const Navbar = () => {
 }
 
 export default Navbar
+
 
