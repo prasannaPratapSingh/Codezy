@@ -1,0 +1,181 @@
+import { useState, useEffect } from 'react';
+import axiosClient from '../utils/axiosClient';
+
+const SubmissionHistory = ({ problemId }) => {
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [ismodal, setismodal] = useState(true);
+
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosClient.get(`/problem/submittedProblem/${problemId}`);
+        setSubmissions(response.data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch submission history');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubmissions();
+  }, [problemId]);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'accepted': return 'badge-success';
+      case 'wrong': return 'badge-error';
+      case 'error': return 'badge-warning';
+      case 'pending': return 'badge-info';
+      default: return 'badge-neutral';
+    }
+  };
+
+  const formatMemory = (memory) => {
+    if (memory < 1024) return `${memory} kB`;
+    return `${(memory / 1024).toFixed(2)} MB`;
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleString();
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="alert alert-error shadow-lg my-4">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{error}</span>
+        </div>
+      </div>
+    );
+  }
+
+  console.log(submissions);
+
+  return (
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-6 text-center">Submission History</h2>
+
+      {submissions.length === 0 ? (
+        <div className="alert alert-info shadow-lg">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span className='font-semibold' >You haven't submitted any code. Find a problem and give it a try!</span>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="overflow-x-auto">
+            <table className="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Language</th>
+                  <th>Status</th>
+                  <th>Runtime</th>
+                  <th>Memory</th>
+                  <th>Test Cases</th>
+                  <th>Submitted</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions?.map((sub, index) => (
+                  <tr key={sub._id}>
+                    <td>{index + 1}</td>
+                    <td className="font-mono">{sub.language}</td>
+                    <td>
+                      <span className={`badge ${getStatusColor(sub.status)}`}>
+                        {sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
+                      </span>
+                    </td>
+
+                    <td className="font-mono">{sub.runtime}sec</td>
+                    <td className="font-mono">{formatMemory(sub.memory)}</td>
+                    <td className="font-mono">{sub.testCasesPassed}/{sub.testCasesTotal}</td>
+                    <td>{formatDate(sub.createdAt)}</td>
+                    <td>
+                      <button
+                        className="btn btn-s btn-outline"
+                        onClick={() => {
+                          setSelectedSubmission(sub)
+                          setismodal(true)
+                        }}
+                      >
+                        Code
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-4 text-sm text-gray-500">
+            Showing {submissions.length} submissions
+          </p>
+        </>
+      )}
+
+      {/* Code View Modal */}
+      {selectedSubmission && ismodal && (
+        <div className='bg-blue-900 absolute top-0 rounded-xl p-5 text-sm  inset-shadow-white/50 inset-shadow-sm' >
+          <h1 className='text-2xl font-semibold text-center'>  Submissions Details for {selectedSubmission.language} Code</h1>
+          <div className='mt-5 flex justify-between p-2 gap-2'>
+            <div className='border rounded-sm px-2.5 py-1 hover:cursor-pointer'>
+              <h3>Status:  {selectedSubmission.status}</h3>
+            </div>
+            <div className='border rounded-sm px-2.5 py-1 hover:cursor-pointer'>
+              <h3>Runtime: {selectedSubmission.runtime}</h3>
+            </div>
+            <div className='border rounded-sm px-2.5 py-1 hover:cursor-pointer'>
+              <h3>Memory: {formatMemory(selectedSubmission.memory)}</h3>
+            </div>
+            <div className='border rounded-sm px-2.5 py-1 hover:cursor-pointer'>
+              <h3>Passed: {selectedSubmission.testCasesPassed}/{selectedSubmission.testCasesTotal}</h3>
+            </div>
+            {selectedSubmission.errorMessage && (
+              <div className="alert alert-error mt-2">
+                <div>
+                  <span>{selectedSubmission.errorMessage}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          <pre className=" h-100 text-sm bg-gray-900/50 p-5 max-w-xl rounded-xl mt-5 mb-5 overflow-x-auto overflow-y-auto">
+            <code>{selectedSubmission.code}</code>
+          </pre>
+          <div>
+            <button
+              className='btn bg-transparent border-white'
+              onClick={() => setismodal(false)}
+            >Close
+            </button>
+          </div>
+        </div>
+      )
+
+      }
+    </div >
+  );
+};
+
+export default SubmissionHistory;
