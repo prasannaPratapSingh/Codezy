@@ -41,7 +41,7 @@ const Footer = () => {
                 </div>
                 <p className='font-semibold text-white'>&copy; 2025 Codezy. All rights reserved</p>
                 <div className='flex gap-2'>
-                    <p className='text-white>Made With</p>
+                    <p className='text-white'>Made With</p>
                     <span className='hover:cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out'>☕</span>
                     <span className='text-white'>&</span>
                     <span className='hover:cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out'>❣️</span>
@@ -53,4 +53,5 @@ const Footer = () => {
 
 
 export default Footer
+
 
