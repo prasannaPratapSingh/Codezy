@@ -64,7 +64,7 @@ function ProblemGenerator() {
         <div className="max-w-2xl mx-auto p-6">
             <div className="card bg-base-100 shadow-xl">
                 <div className="card-body">
-                    <h2 className="card-title text-2xl mb-6 flex items-center gap-2">
+                    <h2 className="card-title text-2xl mb-6 flex items-center gap-2 text-black">
                         <Zap className="text-primary" size={24} />
                         AI Problem Generator
                     </h2>
