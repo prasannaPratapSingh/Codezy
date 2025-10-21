@@ -73,7 +73,7 @@ function ProblemGenerator() {
                         {/* Topic/Problem Type Field */}
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium flex items-center gap-2">
+                                <span className="label-text font-medium flex items-center gap-2 text-black">
                                     <BookOpen size={16} />
                                     Problem Topic/Type
                                 </span>
@@ -83,10 +83,10 @@ function ProblemGenerator() {
                                 {...register("topic", { required: "Topic is required" })}
                                 disabled={isGenerating}
                             >
-                                <option value="array">Array✨</option>
-                                <option value="linkedList">Linked List😁</option>
-                                <option value="graph">Graph🙄</option>
-                                <option value="dp">Dyanmic Programming😭</option>
+                                <option className="text-black" value="array">Array✨</option>
+                                <option className="text-black" value="linkedList">Linked List😁</option>
+                                <option className="text-black" value="graph">Graph🙄</option>
+                                <option className="text-black" value="dp">Dyanmic Programming😭</option>
                             </select>
                             {errors.topic&&(
                                 <label className="label">
@@ -98,7 +98,7 @@ function ProblemGenerator() {
                         {/* Difficulty Level Field */}
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium flex items-center gap-2">
+                                <span className="label-text font-medium flex items-center gap-2 text-black">
                                     <Target size={16} />
                                     Difficulty Level
                                 </span>
@@ -108,9 +108,9 @@ function ProblemGenerator() {
                                 {...register("difficulty", { required: "Difficulty is required" })}
                                 disabled={isGenerating}
                             >
-                                <option value="easy">Easy</option>
-                                <option value="medium">Medium</option>
-                                <option value="hard">Hard</option>
+                                <option className="text-black" value="easy">Easy</option>
+                                <option className="text-black" value="medium">Medium</option>
+                                <option className="text-black" value="hard">Hard</option>
                             </select>
                             {errors.difficulty && (
                                 <label className="label">
@@ -131,7 +131,7 @@ function ProblemGenerator() {
                                         Generating...
                                     </>
                                 ) : (
-                                    <>
+                                    < >
                                         <Zap className="mr-2" size={20} />
                                         Start Generating Problem
                                     </>
