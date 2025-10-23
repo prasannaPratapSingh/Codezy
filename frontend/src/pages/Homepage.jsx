@@ -11,7 +11,7 @@ function Homepage() {
   const [solvedProblems, setSolvedProblems] = useState([]);
   const [fetchPorfile, setfetchProfile] = useState();
   const [search, setSearch] = useState("");
-  console.log(search);
+
   const [filters, setFilters] = useState({
     difficulty: 'all',
     tag: 'all',
@@ -73,7 +73,7 @@ function Homepage() {
   });
 
 
-  console.log(filteredProblems)
+ 
 
 
   return (
