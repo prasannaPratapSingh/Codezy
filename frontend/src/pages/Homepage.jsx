@@ -9,27 +9,29 @@ function Homepage() {
   const { user } = useSelector((state) => state.auth);
   const [problems, setProblems] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState([]);
-  const [fetchPorfile,setfetchProfile]=useState();
+  const [fetchPorfile, setfetchProfile] = useState();
+  const [search, setSearch] = useState("");
+  console.log(search);
   const [filters, setFilters] = useState({
     difficulty: 'all',
     tag: 'all',
     status: 'all'
   });
 
-      useEffect(() => {
-          const fetchUrl = async () => {
-              try {
-                  const response = await axiosClient.get('/profile/url');
-                  const { secureUrl } = response.data;
-                  setfetchProfile(secureUrl);
-              }
-              catch (err) {
-                  console.error("Error aa gaya re", err);
-                  setfetchProfile(null);
-              }
-          }
-          fetchUrl();
-      }, [])
+  useEffect(() => {
+    const fetchUrl = async () => {
+      try {
+        const response = await axiosClient.get('/profile/url');
+        const { secureUrl } = response.data;
+        setfetchProfile(secureUrl);
+      }
+      catch (err) {
+        console.error("Error aa gaya re", err);
+        setfetchProfile(null);
+      }
+    }
+    fetchUrl();
+  }, [])
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -57,8 +59,6 @@ function Homepage() {
   const handleLogout = () => {
     dispatch(logoutUser());
     setSolvedProblems([]);
-    localStorage.removeItem('testButtonDisabled');
-    localStorage.removeItem('remainingTestUses');
   };
 
   const filteredProblems = problems.filter(problem => {
@@ -66,8 +66,15 @@ function Homepage() {
     const tagMatch = filters.tag === 'all' || problem.tags === filters.tag;
     const statusMatch = filters.status === 'all' ||
       (filters.status === 'solved' && solvedProblems.some(sp => sp._id === problem._id));
-    return difficultyMatch && tagMatch && statusMatch;
+
+    const searchMatch = !search || problem.title.toLowerCase().includes(search.toLowerCase());
+
+    return difficultyMatch && tagMatch && statusMatch && searchMatch;
   });
+
+
+  console.log(filteredProblems)
+
 
   return (
     <div className="min-h-screen relative overflow-hidden"
@@ -105,6 +112,55 @@ function Homepage() {
 
         {/* Filters Section */}
         < div className="backdrop-blur-xl bg-gray-900/30 border border-gray-600/20 rounded-3xl p-6 mb-8 shadow-2xl" >
+          <div className="relative mb-6">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative backdrop-blur-xl bg-gray-900/40 border border-gray-600/30 rounded-2xl overflow-hidden hover:border-gray-500/50 transition-all duration-300">
+                <div className="flex items-center px-4 py-3">
+                  <svg
+                    className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Search problems..."
+                    className="flex-1 bg-transparent border-none outline-none px-4 text-gray-100 placeholder-gray-500 text-sm md:text-base focus:placeholder-gray-400 transition-colors duration-200"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  {search && (
+                    <button
+                      onClick={() => setSearch("")}
+                      className="p-1 hover:bg-gray-800/60 rounded-full transition-colors duration-200 group/btn"
+                    >
+                      <svg
+                        className="w-4 h-4 text-gray-400 group-hover/btn:text-gray-200 transition-colors duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
           <h2 className="text-xl font-semibold text-gray-100 mb-4">Filter Problems</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="form-control">
