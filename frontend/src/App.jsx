@@ -15,6 +15,7 @@ import AdminUpdate from "./components/AdminUpdate";
 import UpdateProblem from "./components/UpdateProblem";
 import Profile from "./components/Profile";
 import ActualHome from "./pages/ActualHome";
+import {Toaster} from "react-hot-toast"
 
 
 
@@ -32,9 +33,11 @@ function App() {
       <span className="loading loading-spinner loading-lg"></span>
     </div>;
   }
+
   return (
     <>
       {/* <Navbar/> */}
+      <Toaster/>
       <Routes>
         <Route path="/actualhome" element={<ActualHome />}></Route>
         <Route path="/" element={isAuthenticated ? <Homepage></Homepage> : <Navigate to="/actualhome" />}></Route>

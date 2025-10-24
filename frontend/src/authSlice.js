@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosClient from './utils/axiosClient'
+import toast from 'react-hot-toast';
 
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -82,12 +83,14 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+        toast.success("Registered Successfully!");
         state.loading = false;
         state.isAuthenticated = !!action.payload;
         state.user = action.payload;
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
+        toast.error('Registration failed');
         state.loading = false;
         state.error = action.payload?.message || 'Registration failed';
         state.isAuthenticated = false;
@@ -100,12 +103,14 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        toast.success("Logged In Successfully!");
         state.loading = false;
         state.isAuthenticated = !!action.payload;
         state.user = action.payload;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        toast.error('Login failed');
         state.loading = false;
         state.error = action.payload?.message || 'Login failed';
         state.isAuthenticated = false;
@@ -136,12 +141,14 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
+        toast.success("Logged Out Successfully!");
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
         state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
+        toast.error('Logout failed');
         state.loading = false;
         state.error = action.payload?.message || 'Logout failed';
         state.isAuthenticated = false;
@@ -149,6 +156,7 @@ const authSlice = createSlice({
       });
   }
 });
+
 
 export const { clearError } = authSlice.actions;
 export default authSlice.reducer;
