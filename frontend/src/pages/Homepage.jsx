@@ -3,6 +3,8 @@ import { NavLink } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
+import { Search } from 'lucide-react';
+
 
 function Homepage() {
   const dispatch = useDispatch();
@@ -73,7 +75,7 @@ function Homepage() {
   });
 
 
- 
+
 
 
   return (
@@ -101,7 +103,7 @@ function Homepage() {
       </nav >
 
       {/* Main Content */}
-      < div className="relative z-10 container mx-auto px-6 py-8 top-20" >
+      < div className="relative z-10 container mx-auto px-6 py-8 top-20 mb-20" >
         {/* Header Section */}
         < div className="text-center mb-12" >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-4">
@@ -117,19 +119,8 @@ function Homepage() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative backdrop-blur-xl bg-gray-900/40 border border-gray-600/30 rounded-2xl overflow-hidden hover:border-gray-500/50 transition-all duration-300">
                 <div className="flex items-center px-4 py-3">
-                  <svg
-                    className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
+                  <Search
+                  />
                   <input
                     type="text"
                     placeholder="Search problems..."
@@ -284,19 +275,6 @@ function Homepage() {
           }
         </div >
       </div >
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div >
   );
 }
