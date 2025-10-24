@@ -3,7 +3,7 @@ import { NavLink } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
-import { Search } from 'lucide-react';
+import { Search, User } from 'lucide-react';
 
 
 function Homepage() {
@@ -11,7 +11,7 @@ function Homepage() {
   const { user } = useSelector((state) => state.auth);
   const [problems, setProblems] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState([]);
-  const [fetchPorfile, setfetchProfile] = useState();
+  const [fetchPorfile, setfetchProfile] = useState("");
   const [search, setSearch] = useState("");
 
   const [filters, setFilters] = useState({
@@ -76,8 +76,6 @@ function Homepage() {
 
 
 
-
-
   return (
     <div className="min-h-screen relative overflow-hidden"
       style={{
@@ -91,7 +89,7 @@ function Homepage() {
         <div className="flex-none gap-4">
           <div className="dropdown dropdown-end">
             <div tabIndex={0} className="btn btn-ghost p-2 sm:text-[20px] overflow-hidden rounded-full w-10 h-10 sm:w-20 sm:h-20">
-              <img className='rounded-full' src={fetchPorfile} alt="?" />
+              {fetchPorfile === "" ? <User /> : <img className='rounded-full' src={fetchPorfile} alt="?" />}
             </div>
             <ul className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 text-white">
               <li><button onClick={handleLogout} className='text-black'>Logout</button></li>
