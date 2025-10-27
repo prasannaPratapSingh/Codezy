@@ -7,6 +7,10 @@ import SubmissionHistory from "../components/SubmissionHistory";
 import { BotMessageSquare, Code, FileText, Trophy, Clock, Monitor, Play, Send } from 'lucide-react';
 import ChatAi from "../components/ChatAi";
 import Editorial from '../components/Editorial';
+import toast from "react-hot-toast";
+import socket from "../socket/socket";
+import { useSelector } from 'react-redux';
+
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -30,6 +34,10 @@ const ProblemPage = () => {
   let { problemId } = useParams();
 
   const { handleSubmit } = useForm();
+
+  const { user } = useSelector((state) => state.auth);
+
+
 
   // Check for mobile screen
   useEffect(() => {
@@ -162,11 +170,18 @@ const ProblemPage = () => {
         code: code,
         language: selectedLanguage
       });
-
       setSubmitResult(response.data);
       setLoading(false);
       setActiveRightTab('result');
       if (isMobile) setShowLeftPanel(false);
+      if (response.data.accepted) {
+        toast.success('Problem Solved');
+        socket.emit('problem-solved', {
+          problemTitle: response.data.problemTitle,
+          username: user?.firstName
+        })
+      }
+      
 
     } catch (error) {
       console.error('Error submitting code:', error);
@@ -274,10 +289,10 @@ const ProblemPage = () => {
                         <div className="px-3 py-1 rounded-full text-xs font-medium bg-blue-900/30 border border-blue-700/40 text-blue-300">
                           {problem.tags}
                         </div>
-                        {problem.generatedBy=='ai' &&(
-                        <div className="px-3 py-1 rounded-full text-xs font-medium bg-green-900/30 border border-green-700/40 text-blue-300">
-                          AI 🤖
-                        </div>
+                        {problem.generatedBy == 'ai' && (
+                          <div className="px-3 py-1 rounded-full text-xs font-medium bg-green-900/30 border border-green-700/40 text-blue-300">
+                            AI 🤖
+                          </div>
                         )}
                       </div>
                     </div>

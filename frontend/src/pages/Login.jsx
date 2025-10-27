@@ -7,6 +7,7 @@ import { loginUser } from "../authSlice";
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import toast from 'react-hot-toast';
 
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
@@ -15,22 +16,22 @@ const loginSchema = z.object({
 
 function Login() {
 
-  const titleanime=useRef()
+  const titleanime = useRef()
 
-  useGSAP(()=>{
-    gsap.from(titleanime.current,{
-      y:-50,
-      opacity:0,
-      duration:1
+  useGSAP(() => {
+    gsap.from(titleanime.current, {
+      y: -50,
+      opacity: 0,
+      duration: 1
     })
   })
 
-  const formanime=useRef()
-  useGSAP(()=>{
-    gsap.from(formanime.current,{
-      y:50,
-      opacity:0,
-      duration:2
+  const formanime = useRef()
+  useGSAP(() => {
+    gsap.from(formanime.current, {
+      y: 50,
+      opacity: 0,
+      duration: 2
     })
   })
 
@@ -39,6 +40,7 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
@@ -54,6 +56,7 @@ function Login() {
   const onSubmit = (data) => {
     dispatch(loginUser(data));
   };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[radial-gradient(125%_125%_at_50%_10%,#000000_40%,#010133_100%)]">
@@ -73,7 +76,6 @@ function Login() {
         <div className="backdrop-blur-xl bg-gray-900/40 border border-gray-600/30 rounded-3xl shadow-2xl p-8 relative overflow-hidden">
           {/* Glass shine effect */}
           <div className="absolute inset-0 bg-gradient-to-br from-gray-700/10 via-transparent to-transparent rounded-3xl"></div>
-          
           {/* Content */}
           <div className="relative z-10">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-100 drop-shadow-md">Codezy</h2>

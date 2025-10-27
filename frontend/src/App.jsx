@@ -15,7 +15,9 @@ import AdminUpdate from "./components/AdminUpdate";
 import UpdateProblem from "./components/UpdateProblem";
 import Profile from "./components/Profile";
 import ActualHome from "./pages/ActualHome";
-import {Toaster} from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
+import socket from "./socket/socket";
+
 
 
 
@@ -28,6 +30,32 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      socket.connect();
+      console.log("Socket Connecting");
+
+      //yeh connection event listen karega 
+      socket.on('connect', () => {
+        console.log("Sokcet connected", socket.id);
+      })
+      //user-solved-problem wale listen karega 
+      socket.on('user-solved-problem', (data) => {
+        toast.success(`${data.username} solved ${data.problemTitle} problem`, {
+          duration: 3000
+        });
+      })
+      return () => {
+        socket.off('connect');
+        socket.off('user-solved-problem');
+        socket.disconnect();
+      }
+
+    }
+  }, [isAuthenticated])
+
+
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
       <span className="loading loading-spinner loading-lg"></span>
@@ -37,11 +65,11 @@ function App() {
   return (
     <>
       {/* <Navbar/> */}
-      <Toaster/>
+      <Toaster />
       <Routes>
         <Route path="/actualhome" element={<ActualHome />}></Route>
         <Route path="/" element={isAuthenticated ? <Homepage></Homepage> : <Navigate to="/actualhome" />}></Route>
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/"/> : <Login></Login>}></Route>
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login></Login>}></Route>
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup></Signup>}></Route>
         <Route path="/admin" element={isAuthenticated && user?.role === 'admin' ? <Admin /> : <Navigate to="/" />} />
         <Route path="/admin/create" element={isAuthenticated && user?.role === 'admin' ? <AdminPanel /> : <Navigate to="/" />} />

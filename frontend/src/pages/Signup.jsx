@@ -7,6 +7,7 @@ import { useNavigate, NavLink } from 'react-router';
 import { registerUser } from '../authSlice';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import toast from 'react-hot-toast';
 
 const signupSchema = z.object({
   firstName: z.string().min(3, "Minimum character should be 3"),
@@ -34,6 +35,9 @@ function Signup() {
 
   const onSubmit = (data) => {
     dispatch(registerUser(data));
+    if(isAuthenticated){
+      toast.success("Logged In Successfully!")
+    }
   };
 
 
@@ -143,9 +147,7 @@ function Signup() {
                     )}
                   </button>
                 </div>
-                {errors.password && (
-                  <span className="text-red-400 text-sm mt-2 drop-shadow-sm">{errors.password.message}</span>
-                )}
+                  <span className="text-red-400 text-sm mt-2 drop-shadow-sm">8+ characters with uppercase, lowercase, number & symbol</span>
               </div>
 
               {/* Submit Button */}
