@@ -26,7 +26,7 @@ CRITICAL REQUIREMENTS:
 3. Include complete program structures for C++, Java, and JavaScript with proper I/O handling
 4. Stritcly Ensure all code compiles and runs correctly on Judge0 online judge system in such a way it can be copy-pasted directly
 5. Create new and unique problems that have not been seen before
-6. Keeps the tag as per the topic provided by the user and it must be single single tag
+6. Keeps the tag as per the topic provided by the user and it must be string and not array.
 7. Follow the provided problem creation guidelines strictly
 
 PROBLEM CREATION GUIDELINES:  
