@@ -9,7 +9,8 @@ const generateProblem = async (req, res) => {
     const userMessage = `${difficulty}, ${topic}`;
     async function main() {
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+        model: "gemini-2.0-flash",
+        temperature: 0.2,
         contents: [
           {
             role: "user",
@@ -23,14 +24,19 @@ CRITICAL REQUIREMENTS:
 1. Always respond with a valid JSON object containing the complete problem structure
 2. Use space-separated input format (e.g., '1 2 3 4 5') instead of array notation
 3. Include complete program structures for C++, Java, and JavaScript with proper I/O handling
-4. Ensure all code compiles and runs correctly on Judge0 online judge system
+4. Stritcly Ensure all code compiles and runs correctly on Judge0 online judge system in such a way it can be copy-pasted directly
+5. Create new and unique problems that have not been seen before
+6. Keeps the tag as per the topic provided by the user and it must be single single tag
+7. Follow the provided problem creation guidelines strictly
+
+PROBLEM CREATION GUIDELINES:  
 
 JSON STRUCTURE REQUIRED:
 {
   "title": "Clear, descriptive problem title",
   "description": "Detailed problem description with constraints and examples using space-separated input format",
   "difficulty": "easy|medium|hard",
-  "tags": "single tag (array, string, math, sorting, searching, etc.)",
+  "tags": ${topic},
   "visibleTestCases": [
     {
       "input": "space-separated input",
@@ -137,17 +143,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
-        String[] parts = line.split(" ");
-        
-        int[] nums = new int[parts.length];
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = Integer.parseInt(parts[i]);
-        }
-        
-        // Solution logic here
-        
-        System.out.println(result);
+        //Write your code here
         scanner.close();
     }
 }
@@ -159,12 +155,9 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-rl.on('line', (input) => {
-    const nums = input.split(' ').map(Number);
     
     // Solution logic here
-    
-    console.log(result);
+
     rl.close();
 });
 
