@@ -19,9 +19,10 @@ const { Server } = require('socket.io');
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-
     origin: 'https://codezy-6y04.onrender.com',
-    credentials: true
+    credentials: true,
+    sameSite: 'none',
+    secure: true
 }))
 
 const server = http.createServer(app);
