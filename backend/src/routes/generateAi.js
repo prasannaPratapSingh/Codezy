@@ -5,7 +5,7 @@ const generateProblem=require('../controllers/generateProblem')
 const sanitizeProblem=require('../controllers/sanitizeProblem')
 
 
-aiRouter.post('/generate-problem',userMiddleware,generateProblem);
+aiRouter.post('/generate-problem',generateProblem);
 aiRouter.post('/sanitize-problem',userMiddleware,sanitizeProblem);
 
 
