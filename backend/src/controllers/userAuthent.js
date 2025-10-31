@@ -63,7 +63,7 @@ const register = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'None'
         });
 
         // Send success response
@@ -142,7 +142,7 @@ const login = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'None'
         });
 
         res.status(201).json({
@@ -198,7 +198,7 @@ const adminRegister = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'None'
         });
 
         res.status(201).send("User Registered Successfully");
