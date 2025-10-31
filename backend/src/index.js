@@ -21,9 +21,7 @@ app.use(cookieParser());
 app.use(cors({
 
     origin: 'https://codezy-6y04.onrender.com',
-    credentials: true,
-    sameSite: 'none',
-    secure: true
+    credentials: true
 }))
 
 const server = http.createServer(app);
