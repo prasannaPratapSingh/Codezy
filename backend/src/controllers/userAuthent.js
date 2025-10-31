@@ -63,7 +63,8 @@ const register = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'none',
+            domain: '.onrender.com' // ADDED THIS LINE
         });
 
         // Send success response
@@ -142,7 +143,8 @@ const login = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'none',
+            domain: '.onrender.com' // ADDED THIS LINE
         });
 
         res.status(201).json({
@@ -167,7 +169,10 @@ const logout = async (req, res) => {
         await redisClient.set(`token:${token}`, 'Blocked');
         await redisClient.expireAt(`token:${token}`, payload.exp);
         
-        res.cookie("token", null, { expires: new Date(Date.now()) });
+        res.cookie("token", null, { 
+            expires: new Date(Date.now()),
+            domain: '.onrender.com' // ADDED THIS LINE
+        });
         res.send("Logged Out Successfully");
     }
     catch (err) {
@@ -198,7 +203,8 @@ const adminRegister = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'none',
+            domain: '.onrender.com' // ADDED THIS LINE
         });
 
         res.status(201).send("User Registered Successfully");
