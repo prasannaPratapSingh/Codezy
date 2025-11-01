@@ -45,6 +45,10 @@ const Footer = () => {
                     <span className='hover:cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out'>☕</span>
                     <span className='text-white'>&</span>
                     <span className='hover:cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out'>❣️</span>
+                    <span className="text-white">by</span>
+                    <a href="https://www.linkedin.com/in/prasanna-pratap-singh-323238318/" target="_blank">
+                        Prasanna
+                    </a>
                 </div>
             </div>
         </>
@@ -53,5 +57,6 @@ const Footer = () => {
 
 
 export default Footer
+
 
 
