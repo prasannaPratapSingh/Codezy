@@ -36,11 +36,24 @@ const ProblemPage = () => {
   const { handleSubmit } = useForm();
 
   const { user } = useSelector((state) => state.auth);
-  useEffect(()=>{
-    if(editorRef.current){
-        editorRef.current.layout();
-    }
-  },[activeRightTab,isMobile,showLeftPanel]);
+useEffect(() => {
+  if (!editorRef.current) return;
+
+  const handleViewportResize = () => {
+    const editor = editorRef.current;
+    try {
+      editor.layout();
+    } catch (e) {}
+  };
+
+  window.visualViewport?.addEventListener("resize", handleViewportResize);
+  window.addEventListener("resize", handleViewportResize);
+
+  return () => {
+    window.visualViewport?.removeEventListener("resize", handleViewportResize);
+    window.removeEventListener("resize", handleViewportResize);
+  };
+}, []);
 
 
   // Check for mobile screen
