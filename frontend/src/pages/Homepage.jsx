@@ -89,7 +89,7 @@ function Homepage() {
         <div className="flex-none gap-4">
           <div className="dropdown dropdown-end">
             <div tabIndex={0} className="btn btn-ghost p-2 sm:text-[20px] overflow-hidden rounded-full w-10 h-10 sm:w-20 sm:h-20">
-              {fetchPorfile === "" ? <User /> : <img className='rounded-full' src={fetchPorfile} alt="?" />}
+              {fetchPorfile !== "" ? <User /> : <img className='rounded-full' src={fetchPorfile} alt="?" />}
             </div>
             <ul className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 text-white">
               <li><button onClick={handleLogout} className='text-black'>Logout</button></li>
