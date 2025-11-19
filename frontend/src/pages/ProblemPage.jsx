@@ -36,7 +36,11 @@ const ProblemPage = () => {
   const { handleSubmit } = useForm();
 
   const { user } = useSelector((state) => state.auth);
-
+  useEffect(()=>{
+    if(editorRef.current){
+        editorRef.current.layout();
+    }
+  },[activeRightTab,isMobile,showLeftPanel]);
 
 
   // Check for mobile screen
@@ -420,9 +424,9 @@ const ProblemPage = () => {
                 </div>
 
                 {/* Monaco Editor */}
-                <div className="flex-1 bg-gray-950 h-full">
+                <div className="flex-1 bg-gray-950 min-h-[300px]">
                   <Editor
-                    height="100%"
+                    height="calc(100vh - 180px)"
                     language={getLanguageForMonaco(selectedLanguage)}
                     value={code}
                     onChange={handleEditorChange}
