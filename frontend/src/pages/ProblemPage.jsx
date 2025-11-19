@@ -400,7 +400,7 @@ const ProblemPage = () => {
           {/* Right Content */}
           <div className="flex-1 flex flex-col">
             {activeRightTab === 'code' && (
-              <div className="flex-1 flex flex-col">
+              <div className="flex-1 flex flex-col h-full">
                 {/* Language Selector */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 border-b border-gray-700/30 gap-4">
                   <div className="flex gap-2 flex-wrap">
@@ -420,7 +420,7 @@ const ProblemPage = () => {
                 </div>
 
                 {/* Monaco Editor */}
-                <div className="flex-1 bg-gray-950">
+                <div className="flex-1 bg-gray-950 h-full">
                   <Editor
                     height="100%"
                     language={getLanguageForMonaco(selectedLanguage)}
