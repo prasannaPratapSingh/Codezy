@@ -447,6 +447,22 @@ const ProblemPage = () => {
                       readOnly: false,
                       cursorStyle: 'line',
                       mouseWheelZoom: true,
+
+                          // Mobile-specific fixes
+                      mouseStyle: 'default',
+                      disableMonospaceOptimizations: true,
+                      scrollbar: {
+                      alwaysConsumeMouseWheel: false,
+                      vertical: isMobile ? 'visible' : 'auto',
+                      horizontal: isMobile ? 'visible' : 'auto',
+                      useShadows: false,
+                      verticalScrollbarSize: isMobile ? 10 : 6,
+                      horizontalScrollbarSize: isMobile ? 10 : 6,
+                      },
+                      overviewRulerBorder: false,
+                      hideCursorInOverviewRuler: true,
+                      // Prevent unwanted touch behaviors
+                      contextmenu: false,
                     }}
                   />
                 </div>
