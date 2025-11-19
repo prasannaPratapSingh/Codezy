@@ -398,7 +398,7 @@ const ProblemPage = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col h-full">
             {activeRightTab === 'code' && (
               <div className="flex-1 flex flex-col h-full">
                 {/* Language Selector */}
