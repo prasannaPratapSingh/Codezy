@@ -36,7 +36,24 @@ const ProblemPage = () => {
   const { handleSubmit } = useForm();
 
   const { user } = useSelector((state) => state.auth);
+useEffect(() => {
+  if (!editorRef.current) return;
 
+  const handleViewportResize = () => {
+    const editor = editorRef.current;
+    try {
+      editor.layout();
+    } catch (e) {}
+  };
+
+  window.visualViewport?.addEventListener("resize", handleViewportResize);
+  window.addEventListener("resize", handleViewportResize);
+
+  return () => {
+    window.visualViewport?.removeEventListener("resize", handleViewportResize);
+    window.removeEventListener("resize", handleViewportResize);
+  };
+}, []);
 
 
   // Check for mobile screen
@@ -398,9 +415,9 @@ const ProblemPage = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col h-full">
             {activeRightTab === 'code' && (
-              <div className="flex-1 flex flex-col">
+              <div className="flex-1 flex flex-col h-full">
                 {/* Language Selector */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 border-b border-gray-700/30 gap-4">
                   <div className="flex gap-2 flex-wrap">
@@ -420,9 +437,9 @@ const ProblemPage = () => {
                 </div>
 
                 {/* Monaco Editor */}
-                <div className="flex-1 bg-gray-950">
+                <div className="flex-1 bg-gray-950 min-h-[300px]">
                   <Editor
-                    height="100%"
+                    height="calc(100vh - 180px)"
                     language={getLanguageForMonaco(selectedLanguage)}
                     value={code}
                     onChange={handleEditorChange}
@@ -447,6 +464,22 @@ const ProblemPage = () => {
                       readOnly: false,
                       cursorStyle: 'line',
                       mouseWheelZoom: true,
+
+                          // Mobile-specific fixes
+                      mouseStyle: 'default',
+                      disableMonospaceOptimizations: true,
+                      scrollbar: {
+                      alwaysConsumeMouseWheel: false,
+                      vertical: isMobile ? 'visible' : 'auto',
+                      horizontal: isMobile ? 'visible' : 'auto',
+                      useShadows: false,
+                      verticalScrollbarSize: isMobile ? 10 : 6,
+                      horizontalScrollbarSize: isMobile ? 10 : 6,
+                      },
+                      overviewRulerBorder: false,
+                      hideCursorInOverviewRuler: true,
+                      // Prevent unwanted touch behaviors
+                      contextmenu: false,
                     }}
                   />
                 </div>
