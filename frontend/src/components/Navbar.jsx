@@ -37,8 +37,9 @@ const Navbar = () => {
         <button className='sm:text-xl p-2 btn bg-transparent border-none shadow-none text-white'>
           <NavLink to={'/signup'}>Signup</NavLink>
         </button>
-      </div>
-    </nav>
+        <div className='sm:text-xl p-2 btn shadow-none bg-transparent text-white  bg-gradient-to-b from-blue-950 to-black border-none'><NavLink to={'/contest'}>Contest</NavLink></div>
+    </div>
+    </nav >
   )
 }
 

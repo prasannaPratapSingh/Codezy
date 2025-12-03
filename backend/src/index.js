@@ -14,19 +14,19 @@ const profileRouter = require('./routes/profile');
 const featureRouter = require('./routes/feature');
 const http = require('http');
 const { Server } = require('socket.io');
-
+const contestRouter=require('./routes/contest');
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://codezy-6y04.onrender.com',
+    origin: 'http://localhost:5173',
     credentials: true
 }))
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'https://codezy-6y04.onrender.com',
+        origin: 'http://localhost:5173',
         methods: ['GET', 'POST'],
         credentials: true
     }
@@ -60,10 +60,6 @@ io.on('connection', (socket) => {
     })
 })
 
-
-
-
-
 app.use('/user', authRouter);
 app.use('/problem', problemRouter);
 app.use('/submission', submitRouter);
@@ -71,7 +67,7 @@ app.use('/ai', aiRouter);
 app.use('/video', videoRouter);
 app.use('/profile', profileRouter);
 app.use('/feature', featureRouter);
-
+app.use('/contest', contestRouter);
 
 const InitalizeConnection = async () => {
     try {

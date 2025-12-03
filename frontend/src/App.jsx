@@ -17,6 +17,8 @@ import Profile from "./components/Profile";
 import ActualHome from "./pages/ActualHome";
 import toast, { Toaster } from "react-hot-toast"
 import socket from "./socket/socket";
+import Contest from "./pages/Contest";
+import ContestPage from "./pages/ContestPage";
 
 
 
@@ -80,6 +82,8 @@ function App() {
         <Route path="/admin/update/final/:problemId" element={isAuthenticated && user?.role === 'admin' ? <UpdateProblem /> : <Navigate to="/" />} />
         <Route path="/problem/:problemId" element={<ProblemPage />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/contest" element={isAuthenticated?<Contest/>:<Signup/>}></Route>
+        <Route path="/contest/getContest/:id" element={<ContestPage/>} ></Route>
       </Routes>
     </>
   )

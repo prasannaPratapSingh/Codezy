@@ -18,7 +18,6 @@ function ActualHome() {
         background: "radial-gradient(125% 125% at 50% 100%, #000000 40%, #010133 100%)",
       }}>
       <Navbar />
-
       <HeroSection />
       <CompanySection />
       <FreAQ/>

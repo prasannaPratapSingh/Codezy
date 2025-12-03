@@ -25,7 +25,6 @@ function HeroSection() {
   const titleanim = useRef()
   useGSAP(() => {
     gsap.from(titleanim.current, {
-      y: 50,
       opacity: 0,
       delay: 0.25,
       duration: 1

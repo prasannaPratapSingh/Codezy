@@ -85,7 +85,9 @@ function Homepage() {
       < nav className="navbar px-4 bg-blue/20 backdrop-blur-xs fixed z-1000" >
         <div className="flex-1">
           <NavLink to="/actualhome" className="btn btn-ghost text-xl text-white">Codezy</NavLink>
+          <div className='sm:text-xl p-2 btn shadow-none bg-transparent text-white  bg-gradient-to-t from-blue-950 to-black border-none'><NavLink to={'/contest'}>Contest</NavLink></div>
         </div>
+
         <div className="flex-none gap-4">
           <div className="dropdown dropdown-end">
             <div tabIndex={0} className="btn btn-ghost p-2 sm:text-[20px] overflow-hidden rounded-full w-10 h-10 sm:w-20 sm:h-20">

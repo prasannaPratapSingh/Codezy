@@ -17,32 +17,32 @@ const contestSubmissionSchema = new Schema({
         type: String,
         required: true
     },
-    sourceCode: {
+    code: {
         type: String,
         required: true
     },
-    testCaseResults: [{
-        testCaseType: {
-            type: String,
-            enum: ['visible', 'hidden'],
-            required: true
-        },
-        input: String,
-        expectedOutput: String,
-        actualOutput: String,
-        passed: {
-            type: Boolean,
-            required: true
-        },
-        executionTime: Number,
-        memoryUsed: Number,
-        errorMessage: String
-    }],
+    status: {
+        type: String,
+        enum: ['pending', 'accepted', 'wrong', 'error'],
+        default: 'pending'
+    },
+    errorMessage: {
+        type: String,
+        default: ''
+    },
     totalTestCases: {
         type: Number,
         default: 0
     },
-    passedTestCases: {
+    testCasesPassed: {
+        type: Number,
+        default: 0
+    },
+    testCasesTotal: {
+        type: Number,
+        default: 0
+    },
+    memory: {
         type: Number,
         default: 0
     },
@@ -50,11 +50,13 @@ const contestSubmissionSchema = new Schema({
         type: Number,
         default: 0
     },
-
-    isAccepted: {
-        type: Boolean,
-        default: false
+    runtime: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true
 })
+
+const ContestSubmission = mongoose.model('contestuser', contestSubmissionSchema);
+module.exports = ContestSubmission;

@@ -8,7 +8,7 @@ const contestSchema = new Schema({
     },
     description: {
         type: String,
-        requried: true
+        required: true
     },
     startTime: {
         type: Date,
@@ -20,17 +20,21 @@ const contestSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['draft', 'active', 'completed', 'cancelled'],
+        enum: ['draft', 'live', 'completed', 'cancelled'],
         default: 'draft'
     },
 
-    title: {
+    problemTitle: {
         type: String,
         required: true
     },
-    description: {
+    difficulty: {
         type: String,
         enum: ['easy', 'medium', 'hard'],
+        required: true
+    },
+    problemDescription: {
+        type: String,
         required: true
     },
     tags: {
@@ -39,7 +43,7 @@ const contestSchema = new Schema({
         required: true
     },
     points: {
-        stype: Number,
+        type: Number,
         required: true,
         min: 0
     },
