@@ -38,9 +38,9 @@ const Contest = () => {
             ) : (
                 <>
                     <div className="mx-auto max-w-6xl flex flex-col items-center mb-20">
-                        <p className="text-8xl mb-2 font-medium">Welcome to the</p>
-                        <span className="text-6xl">Codezy Contest</span>
-                        <p className="text-xl italic mt-1 text-neutral-400">
+                        <p className=" text-6xl sm:text-8xl mb-2 font-medium text-center">Welcome to the</p>
+                        <span className=" text-4xl sm:text-6xl text-center">Codezy Contest</span>
+                        <p className="text-lg sm:text-xl italic mt-1 text-neutral-400 text-center">
                             Think in Bits. Compete in Brains.
                         </p>
                     </div>
