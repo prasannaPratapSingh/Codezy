@@ -229,7 +229,7 @@ const submitContestCode = async (req, res) => {
         }
 
         const contestProblem = await Contest.findById(contestId);
-        if (new Date(contestProblem.endTime).getTime() - new Date().getTime()<=0){
+        if (new Date(contestProblem.endTime).getTime() - new Date().getTime() <= 0) {
             return res.status(400).send("Time's Up!");
         }
         const contestSubmitted = await ContestSubmission.create({
@@ -308,6 +308,55 @@ const submitContestCode = async (req, res) => {
     }
 }
 
-module.exports = { contestCreator, getContest, getContestById, runContestCode, submitContestCode };
+const getLeaderboard = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const contest = await Contest.findById(id).select("endTime");
+        if (!contest) {
+            return res.status(404).json({
+                success: false,
+                message: "Contest not found!"
+            });
+        }
+
+        const endDate = contest.endTime;
+
+        if (new Date() < endDate) {
+            return res.status(400).json({
+                success: false,
+                message: "Wait for the contest to finish to view the leaderboard."
+            });
+        }
+
+        const submissions = await ContestSubmission.find({ contestId: id })
+            .select("userId language status score runtime createdAt")
+            .populate("userId", "firstName")
+            .sort({ score: -1, runtime: 1, createdAt: 1 });
+
+        if (submissions.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No leaderboard prepared for this contest."
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Leaderboard fetched successfully",
+            leaderboard: submissions
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong while preparing the leaderboard."
+        });
+    }
+};
+
+
+module.exports = { contestCreator, getContest, getContestById, runContestCode, submitContestCode, getLeaderboard };
 
 
