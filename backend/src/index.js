@@ -14,7 +14,7 @@ const profileRouter = require('./routes/profile');
 const featureRouter = require('./routes/feature');
 const http = require('http');
 const { Server } = require('socket.io');
-const contestRouter=require('./routes/contest');
+const contestRouter = require('./routes/contest');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -22,6 +22,8 @@ app.use(cors({
     origin: 'https://codezy-6y04.onrender.com',
     credentials: true
 }))
+
+
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -68,6 +70,12 @@ app.use('/video', videoRouter);
 app.use('/profile', profileRouter);
 app.use('/feature', featureRouter);
 app.use('/contest', contestRouter);
+app.use('/healthCheck', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Server is OK 💪🏻"
+    })
+})
 
 const InitalizeConnection = async () => {
     try {
