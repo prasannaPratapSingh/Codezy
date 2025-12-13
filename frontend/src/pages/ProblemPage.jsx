@@ -485,7 +485,8 @@ useEffect(() => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="p-4 border-t border-gray-700/30 flex flex-col sm:flex-row sm:justify-between gap-4">
+                <div className="p-4 border-t border-gray-700/30 flex sm:flex-row sm:justify-between gap-4">
+                
                   <button
                     className="px-4 py-2 bg-gray-800/30 border border-gray-700/30 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/30 transition-all duration-200 text-sm"
                     onClick={() => setActiveRightTab('testcase')}
