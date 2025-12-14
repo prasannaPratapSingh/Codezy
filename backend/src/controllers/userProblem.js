@@ -3,6 +3,7 @@ const Problem = require("../models/problem");
 const User = require("../models/user");
 const Submission = require("../models/submission");
 const SolutionVideo = require('../models/solutionVideo');
+const redisClient = require("../config/redis");
 
 const createProblem = async (req, res) => {
 
@@ -58,10 +59,11 @@ const createProblem = async (req, res) => {
       problemCreator: req.result._id
     });
 
+    await redisClient.del("problems:list:all");
     // const latestDoc = await Problem.findOne({}, { sort: { _id: -1 } });
     res.status(201).json({
       message: "Problem saved Successfully",
-      probId:userProblem._id
+      probId: userProblem._id
     });
   }
   catch (err) {
@@ -229,6 +231,7 @@ const updateProblem = async (req, res) => {
           }
         }
 
+
         console.log(`${language} solution passed all test cases ✓`);
 
       } catch (error) {
@@ -287,6 +290,8 @@ const updateProblem = async (req, res) => {
       return res.status(404).json({ message: "Problem not found after update" });
     }
 
+    await redisClient.del("problems:list:all");
+
     console.log(`Problem "${updatedProblem.title}" updated successfully`);
 
     res.status(200).json({
@@ -322,6 +327,7 @@ const updateProblem = async (req, res) => {
     });
   }
 }
+
 const deleteProblem = async (req, res) => {
 
   const { id } = req.params;
@@ -335,6 +341,7 @@ const deleteProblem = async (req, res) => {
     if (!deletedProblem)
       return res.status(404).send("Problem is Missing");
 
+    await redisClient.del("problems:list:all");
 
     res.status(200).send("Successfully Deleted");
   }
@@ -386,11 +393,21 @@ const getAllProblem = async (req, res) => {
 
   try {
 
+    const key = "problems:list:all";
+    const cachedData = await redisClient.get(key);
+
+    if (cachedData) {
+      return res.status(200).send(JSON.parse(cachedData));
+    }
+
     const getProblem = await Problem.find({}).select('_id title difficulty tags generatedBy');
 
     if (getProblem.length == 0)
       return res.status(404).send("Problem is Missing");
 
+    await redisClient.set(key, JSON.stringify(getProblem), {
+      "EX": 60
+    });
 
     res.status(200).send(getProblem);
   }
