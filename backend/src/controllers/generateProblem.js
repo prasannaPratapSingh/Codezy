@@ -9,7 +9,7 @@ const generateProblem = async (req, res) => {
     const userMessage = `${difficulty}, ${topic}`;
     async function main() {
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash",
         temperature: 0.2,
         contents: [
           {
