@@ -18,21 +18,30 @@ const contestRouter = require('./routes/contest');
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: 'https://codezy-6y04.onrender.com',
-    credentials: true
-}))
+app.use(
+    cors({
+        origin: [
+            "https://codezy.space",
+            "https://www.codezy.space"
+        ],
+        credentials: true
+    })
+);
 
 
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'https://codezy-6y04.onrender.com',
-        methods: ['GET', 'POST'],
+        origin: [
+            "https://codezy.space",
+            "https://www.codezy.space"
+        ],
+        methods: ["GET", "POST"],
         credentials: true
     }
-})
+});
+
 
 //yeh saare route me websocket use karne ke liye
 app.set('io', io);

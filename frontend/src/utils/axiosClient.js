@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const axiosClient = axios.create({
-    baseURL: 'https://final-code-qrxd.onrender.com',
+    baseURL: 'https://www.codezy.space',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'

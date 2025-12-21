@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io('https://final-code-qrxd.onrender.com', {
+const socket = io('https://api.codezy.space', {
     autoConnect: true,
     reconnection: true,
     reconnectionDelay: 1000,

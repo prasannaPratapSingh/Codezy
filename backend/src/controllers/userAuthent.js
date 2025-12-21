@@ -42,8 +42,8 @@ const register = async (req, res) => {
                 _id: user._id,
                 emailId: user.emailId,
                 role: user.role,
-                specialFeature:{
-                    specialUsage:0
+                specialFeature: {
+                    specialUsage: 0
                 }
             },
             process.env.JWT_KEY,
@@ -57,13 +57,14 @@ const register = async (req, res) => {
             emailId: user.emailId,
             role: user.role,
         };
-        
+
         // Set cookie with proper options for cross-origin
         res.cookie('token', token, {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'None'
+            sameSite: 'None',
+            domain: '.codezy.space'
         });
 
         // Send success response
@@ -130,8 +131,8 @@ const login = async (req, res) => {
             _id: user._id,
             emailId: emailId,
             role: user.role,
-            specialFeature:{
-                specialUsage:0
+            specialFeature: {
+                specialUsage: 0
             }
         },
             process.env.JWT_KEY,
@@ -142,7 +143,8 @@ const login = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'None'
+            sameSite: 'None',
+            domain: '.codezy.space'
         });
 
         res.status(201).json({
@@ -166,7 +168,7 @@ const logout = async (req, res) => {
 
         await redisClient.set(`token:${token}`, 'Blocked');
         await redisClient.expireAt(`token:${token}`, payload.exp);
-        
+
         res.cookie("token", null, { expires: new Date(Date.now()) });
         res.send("Logged Out Successfully");
     }
@@ -198,7 +200,8 @@ const adminRegister = async (req, res) => {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: 'None'
+            sameSite: 'None',
+            domain: '.codezy.space'
         });
 
         res.status(201).send("User Registered Successfully");
