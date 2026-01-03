@@ -10,7 +10,9 @@ import Editorial from '../components/Editorial';
 import toast from "react-hot-toast";
 import socket from "../socket/socket";
 import { useSelector } from 'react-redux';
-
+import CodeMirror from "@uiw/react-codemirror";
+import {javascript} from "@codemirror/lang-javascript";
+import {atomone} from "@uiw/codemirror-theme-atomone";
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -36,24 +38,24 @@ const ProblemPage = () => {
   const { handleSubmit } = useForm();
 
   const { user } = useSelector((state) => state.auth);
-useEffect(() => {
-  if (!editorRef.current) return;
+  useEffect(() => {
+    if (!editorRef.current) return;
 
-  const handleViewportResize = () => {
-    const editor = editorRef.current;
-    try {
-      editor.layout();
-    } catch (e) {}
-  };
+    const handleViewportResize = () => {
+      const editor = editorRef.current;
+      try {
+        editor.layout();
+      } catch (e) { }
+    };
 
-  window.visualViewport?.addEventListener("resize", handleViewportResize);
-  window.addEventListener("resize", handleViewportResize);
+    window.visualViewport?.addEventListener("resize", handleViewportResize);
+    window.addEventListener("resize", handleViewportResize);
 
-  return () => {
-    window.visualViewport?.removeEventListener("resize", handleViewportResize);
-    window.removeEventListener("resize", handleViewportResize);
-  };
-}, []);
+    return () => {
+      window.visualViewport?.removeEventListener("resize", handleViewportResize);
+      window.removeEventListener("resize", handleViewportResize);
+    };
+  }, []);
 
 
   // Check for mobile screen
@@ -70,27 +72,7 @@ useEffect(() => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  const handleCount = async () => {
-    try {
-      const response = await axiosClient.post('/feature/check');
-      const { usageCount, remainingUses } = response.data;
-      console.log("Success response:", usageCount);
-      setCounting(remainingUses);
-      if (usageCount >= 2) {
-        setStatus(true);
-      }
-    }
-    catch (err) {
-      console.log("Error caught:", err.response?.status); // Add this
-      if (err.response?.status === 403) {
-        setStatus(true);
-        console.log("Button disabled due to 403"); // Add this
-      }
-      console.log(err);
-    }
-  }
 
-  // Check initial feature status on component mount
 
   // Fetch problem data
   useEffect(() => {
@@ -198,7 +180,7 @@ useEffect(() => {
           username: user?.firstName
         })
       }
-      
+
 
     } catch (error) {
       console.error('Error submitting code:', error);
@@ -438,7 +420,20 @@ useEffect(() => {
 
                 {/* Monaco Editor */}
                 <div className="flex-1 bg-gray-950 min-h-[300px]">
-                  <Editor
+                  {isMobile ? (
+                    <>
+
+                      <CodeMirror
+                      value={code}
+                      height="calc(100vh - 180px)"
+                      extensions={[javascript()]}
+                      theme={atomone}
+                      onChange={(value)=>setCode(value)}
+                      className='text-sm'
+                      />
+                    </>
+
+                  ) : (<Editor
                     height="calc(100vh - 180px)"
                     language={getLanguageForMonaco(selectedLanguage)}
                     value={code}
@@ -465,28 +460,28 @@ useEffect(() => {
                       cursorStyle: 'line',
                       mouseWheelZoom: true,
 
-                          // Mobile-specific fixes
+                      // Mobile-specific fixes
                       mouseStyle: 'default',
                       disableMonospaceOptimizations: true,
                       scrollbar: {
-                      alwaysConsumeMouseWheel: false,
-                      vertical: isMobile ? 'visible' : 'auto',
-                      horizontal: isMobile ? 'visible' : 'auto',
-                      useShadows: false,
-                      verticalScrollbarSize: isMobile ? 10 : 6,
-                      horizontalScrollbarSize: isMobile ? 10 : 6,
+                        alwaysConsumeMouseWheel: false,
+                        vertical: isMobile ? 'visible' : 'auto',
+                        horizontal: isMobile ? 'visible' : 'auto',
+                        useShadows: false,
+                        verticalScrollbarSize: isMobile ? 10 : 6,
+                        horizontalScrollbarSize: isMobile ? 10 : 6,
                       },
                       overviewRulerBorder: false,
                       hideCursorInOverviewRuler: true,
                       // Prevent unwanted touch behaviors
                       contextmenu: false,
                     }}
-                  />
+                  />)}
                 </div>
 
                 {/* Action Buttons */}
                 <div className="p-4 border-t border-gray-700/30 flex sm:flex-row sm:justify-between gap-4">
-                
+
                   <button
                     className="px-4 py-2 bg-gray-800/30 border border-gray-700/30 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/30 transition-all duration-200 text-sm"
                     onClick={() => setActiveRightTab('testcase')}
