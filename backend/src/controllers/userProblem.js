@@ -7,9 +7,9 @@ const redisClient = require("../config/redis");
 
 const createProblem = async (req, res) => {
 
-  const { title, description, difficulty, tags,
-    visibleTestCases, hiddenTestCases, startCode,
-    referenceSolution, problemCreator
+  const { problemType,driverCode,
+    visibleTestCases,
+    referenceSolution
   } = req.body;
 
 
@@ -17,19 +17,23 @@ const createProblem = async (req, res) => {
 
     for (const { language, completeCode } of referenceSolution) {
 
-
-      // source_code:
-      // language_id:
-      // stdin: 
-      // expectedOutput:
-
       const languageId = getLanguageById(language);
 
       // I am creating Batch submission
+
+      let finalSourceCode;
+      if(problemType==='function'){
+        const driver=driverCode.find(data=>data.language===language);
+        finalSourceCode=driver.header + "\n" + completeCode + "\n" + driver.footer;
+      }
+      else{
+        finalSourceCode=completeCode;
+      }
+
       const submissions = visibleTestCases.map((testcase) => ({
-        source_code: completeCode,
+        source_code: finalSourceCode,
         language_id: languageId,
-        stdin: testcase.input,
+        stdin: problemType==='fullCode'?testcase.input:"",
         expected_output: testcase.output
       }));
 
