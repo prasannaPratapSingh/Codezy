@@ -135,14 +135,26 @@ const runCode = async (req, res) => {
     if (language === 'cpp')
       language = 'c++'
 
+    //refactroing-for-leetcode-questions-structure
+    let finalSourceCode;
+    if(problem.problemType==='function'){
+      const driver=problem.driverCode.find(data=>data.language===language || data.language==='cpp');
+      finalSourceCode=driver.header+"\n"+code+"\n"+driver.footer;
+    }
+    else{
+      finalSourceCode=code;
+    }
+
+
+
     //    Judge0 code ko submit karna hai
 
     const languageId = getLanguageById(language);
 
     const submissions = problem.visibleTestCases.map((testcase) => ({
-      source_code: code,
+      source_code: finalSourceCode,
       language_id: languageId,
-      stdin: testcase.input,
+      stdin: problem.problemType==='fullCode'?testcase.input:'',
       expected_output: testcase.output
     }));
 
