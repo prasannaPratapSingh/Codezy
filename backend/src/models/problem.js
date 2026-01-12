@@ -15,6 +15,13 @@ const problemSchema = new Schema({
         enum: ['easy', 'medium', 'hard'],
         required: true,
     },
+    problemType:{
+        type:String,
+        enum:['fullCode','function'],
+        default:'fullCode'
+    },
+
+
     tags: {
         type: String,
         enum: ['array', 'linkedList', 'graph', 'dp'],
@@ -63,6 +70,29 @@ const problemSchema = new Schema({
         }
     ],
 
+    driverCode:[
+        {
+            language:{
+                type:String,
+                required:true
+            },
+            header:{
+                type:String,
+                required:true
+            },
+            footer:{
+                type:String,
+                required:true
+            }
+        }
+    ],
+
+    functionMeta:{
+        functionName:String,
+        returnType:String,
+        parameters:[String]
+    },
+
     referenceSolution: [
         {
             language: {
@@ -94,20 +124,3 @@ const Problem = mongoose.model('problem', problemSchema);
 
 module.exports = Problem;
 
-
-
-
-// const referenceSolution = [
-//     {
-//         language:"c++",
-//         completeCode:"C++ Code"
-//     },
-//     {
-//         language:"java",
-//         completeCode:"java Code"
-//     },
-//     {
-//         language:"js",
-//         completeCode:"JS Code"
-//     },
-// ]
