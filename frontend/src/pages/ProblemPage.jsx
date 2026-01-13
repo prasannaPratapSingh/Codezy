@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react';
 import { useParams } from 'react-router-dom';
 import axiosClient from "../utils/axiosClient";
 import SubmissionHistory from "../components/SubmissionHistory";
-import { BotMessageSquare, Code, FileText, Trophy, Clock, Monitor, Play, Send } from 'lucide-react';
+import { BotMessageSquare, Code, FileText, Trophy, Clock, Monitor, Play, Send, Loader2 } from 'lucide-react';
 import ChatAi from "../components/ChatAi";
 import Editorial from '../components/Editorial';
 import toast from "react-hot-toast";
@@ -20,6 +20,8 @@ const ProblemPage = () => {
   const [activeLeftTab, setActiveLeftTab] = useState('description');
   const [activeRightTab, setActiveRightTab] = useState('code');
   const [isMobile, setIsMobile] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const editorRef = useRef(null);
   const { problemId } = useParams();
@@ -67,7 +69,8 @@ const ProblemPage = () => {
 
   /* -------------------- ACTIONS -------------------- */
   const handleRun = async () => {
-    setLoading(true);
+    setIsRunning(true);
+    setRunResult(null);
     try {
       const res = await axiosClient.post(`/submission/run/${problemId}`, {
         code,
@@ -79,12 +82,13 @@ const ProblemPage = () => {
       setRunResult({ success: false });
       setActiveRightTab('testcase');
     } finally {
-      setLoading(false);
+      setIsRunning(false);
     }
   };
 
   const handleSubmitCode = async () => {
-    setLoading(true);
+    setIsSubmitting(true);
+    setSubmitResult(null);
     try {
       const res = await axiosClient.post(`/submission/submit/${problemId}`, {
         code,
@@ -103,7 +107,7 @@ const ProblemPage = () => {
     } catch {
       setSubmitResult(null);
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -140,8 +144,11 @@ const ProblemPage = () => {
 
   if (loading && !problem) {
     return (
-      <div className="h-screen flex items-center justify-center bg-black">
-        <div className="animate-spin w-10 h-10 border-b-2 border-blue-400 rounded-full" />
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-950 to-black">
+        <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-2xl p-8">
+          <div className="animate-spin w-12 h-12 border-b-2 border-blue-400 rounded-full mx-auto" />
+          <p className="text-gray-300 mt-4 text-center">Loading problem...</p>
+        </div>
       </div>
     );
   }
@@ -178,7 +185,7 @@ const ProblemPage = () => {
             </div>
           </div>
 
-          {/* Left Content — UNCHANGED STYLING */}
+          {/* Left Content */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6">
             {problem && (
               <>
@@ -250,18 +257,52 @@ const ProblemPage = () => {
                   </div>
                 )}
 
-                {activeLeftTab === 'editorial' && <Editorial />}
-                {activeLeftTab === 'solutions' &&
-                  problem.referenceSolution?.map((solution, i) => (
-                    <pre key={i} className="bg-gray-900/80 p-4 rounded mb-4">
-                      {solution.completeCode}
-                    </pre>
-                  ))
-                }
-                {activeLeftTab === 'submissions' && (
-                  <SubmissionHistory problemId={problemId} />
+                {activeLeftTab === 'editorial' && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white">Editorial</h2>
+                    <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4 sm:p-6">
+                      <Editorial secureUrl={problem?.secureUrl} thumbnailUrl={problem?.thumbnailUrl} duration={problem?.duration} />
+                    </div>
+                  </div>
                 )}
-                {activeLeftTab === 'generate' && <ChatAi />}
+
+                {activeLeftTab === 'solutions' && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white">Solutions</h2>
+                    <div className="space-y-4">
+                      {problem.referenceSolution?.map((solution, index) => (
+                        <div key={index} className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl overflow-hidden">
+                          <div className="bg-gray-900/50 px-4 py-3 border-b border-gray-700/30">
+                            <h3 className="font-semibold text-blue-300">{problem?.title} - {solution?.language}</h3>
+                          </div>
+                          <div className="p-4">
+                            <pre className="bg-gray-900/80 p-4 rounded text-xs sm:text-sm overflow-x-auto text-gray-200">
+                              <code>{solution?.completeCode}</code>
+                            </pre>
+                          </div>
+                        </div>
+                      )) || <p className="text-gray-400 text-center py-8">Solutions will be available after you solve the problem.</p>}
+                    </div>
+                  </div>
+                )}
+
+                {activeLeftTab === 'submissions' && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white text-center">My Submissions</h2>
+                    <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4">
+                      <SubmissionHistory problemId={problemId} />
+                    </div>
+                  </div>
+                )}
+
+                {activeLeftTab === 'generate' && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white">Generate Problem</h2>
+                    <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4">
+                      <ChatAi />
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -313,14 +354,7 @@ const ProblemPage = () => {
                 ))}
               </div>
 
-              <div className="flex-1 bg-gray-950 overflow-hidden">
-                {isMobile ? (
-                  <textarea
-                    className="w-full h-full bg-gray-900 text-gray-200 p-3 font-mono text-sm outline-none resize-none"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                  />
-                ) : (
+              <div className="flex-1 bg-gray-950 overflow-hidden"> (
                   <Editor
                     height="100%"
                     language={getLanguageForMonaco(selectedLanguage)}
@@ -329,35 +363,172 @@ const ProblemPage = () => {
                     onChange={(v) => setCode(v || '')}
                     options={{ automaticLayout: true, wordWrap: 'on' }}
                   />
-                )}
+                )
               </div>
 
-              <div className="p-4 border-t border-gray-700/30 flex justify-end gap-2">
+              <div className="p-4 border-t border-gray-700/30 flex justify-between gap-2">
                 <button
-                  onClick={handleRun}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800/30 border border-gray-700/30 rounded-lg text-gray-300 hover:text-white"
+                  onClick={() => setActiveRightTab('testcase')}
+                  className="px-4 py-2 bg-gray-800/30 border border-gray-700/30 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/30 transition-all duration-200 text-sm"
                 >
-                  <Play size={16} /> Run
+                  Console
                 </button>
-                <button
-                  onClick={handleSubmitCode}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-400/30 rounded-lg text-blue-300 hover:bg-blue-500/30"
-                >
-                  <Send size={16} /> Submit
-                </button>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleRun}
+                    disabled={isRunning}
+                    className={`flex items-center gap-2 px-4 py-2 bg-gray-800/30 border border-gray-700/30 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/30 transition-all duration-200 text-sm ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isRunning ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Running...
+                      </>
+                    ) : (
+                      <>
+                        <Play size={16} />
+                        Run
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={handleSubmitCode}
+                    disabled={isSubmitting}
+                    className={`flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-400/30 rounded-lg text-blue-300 hover:bg-blue-500/30 transition-all duration-200 text-sm ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={16} />
+                        Submit
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
           {activeRightTab === 'testcase' && (
             <div className="flex-1 p-4 overflow-y-auto">
-              {runResult ? JSON.stringify(runResult, null, 2) : 'Run to see output'}
+              <h3 className="font-semibold mb-4 text-white flex items-center gap-2">
+                <Monitor size={20} />
+                Test Results
+              </h3>
+              {isRunning ? (
+                <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-8 text-center">
+                  <Loader2 size={40} className="animate-spin text-blue-400 mx-auto mb-4" />
+                  <p className="text-gray-400">Running your code...</p>
+                </div>
+              ) : runResult ? (
+                <div className={`backdrop-blur-xl border rounded-xl p-4 ${runResult.success ? 'bg-green-900/20 border-green-700/40' : 'bg-red-900/20 border-red-700/40'}`}>
+                  {runResult.success ? (
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-green-300 flex items-center gap-2">
+                        <span className="text-xl">✅</span>
+                        All test cases passed!
+                      </h4>
+                      <div className="flex gap-4 text-sm">
+                        <p className="flex items-center gap-1">
+                          <Clock size={16} />
+                          Runtime: {runResult.runtime} sec
+                        </p>
+                        <p>Memory: {runResult.memory} KB</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        {runResult?.testCases?.map((tc, i) => (
+                          <div key={i} className="bg-gray-900/50 p-3 rounded-lg text-xs sm:text-sm">
+                            <div className="font-mono space-y-1">
+                              <div><strong className="text-gray-300">Input:</strong> <span className="text-green-300">{tc.stdin}</span></div>
+                              <div><strong className="text-gray-300">Expected:</strong> <span className="text-blue-300">{tc.expected_output}</span></div>
+                              <div><strong className="text-gray-300">Output:</strong> <span className="text-green-300">{tc.stdout}</span></div>
+                              <div className="text-green-400 font-medium">✓ Passed</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-red-300 flex items-center gap-2">
+                        <span className="text-xl">❌</span>
+                        Error
+                      </h4>
+                      <div className="space-y-3">
+                        {runResult?.testCases?.map((tc, i) => (
+                          <div key={i} className="bg-gray-900/50 p-3 rounded-lg text-xs sm:text-sm">
+                            <div className="font-mono space-y-1">
+                              <div><strong className="text-gray-300">Input:</strong> <span className="text-green-300">{tc.stdin}</span></div>
+                              <div><strong className="text-gray-300">Expected:</strong> <span className="text-blue-300">{tc.expected_output}</span></div>
+                              <div><strong className="text-gray-300">Output:</strong> <span className="text-red-300">{tc.stdout}</span></div>
+                              <div className={`font-medium ${tc.status_id === 3 ? 'text-green-400' : 'text-red-400'}`}>
+                                {tc.status_id === 3 ? '✓ Passed' : '✗ Failed'}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-8 text-center">
+                  <div className="text-4xl mb-4">🚀</div>
+                  <p className="text-gray-400">Click "Run" to test your code with the example test cases.</p>
+                </div>
+              )}
             </div>
           )}
 
           {activeRightTab === 'result' && (
             <div className="flex-1 p-4 overflow-y-auto">
-              {submitResult ? JSON.stringify(submitResult, null, 2) : 'Submit to see result'}
+              <h3 className="font-semibold mb-4 text-white flex items-center gap-2">
+                <Trophy size={20} />
+                Submission Result
+              </h3>
+              {isSubmitting ? (
+                <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-8 text-center">
+                  <Loader2 size={40} className="animate-spin text-blue-400 mx-auto mb-4" />
+                  <p className="text-gray-400">Submitting your solution...</p>
+                </div>
+              ) : submitResult ? (
+                <div className={`backdrop-blur-xl border rounded-xl p-4 ${submitResult.accepted ? 'bg-green-900/20 border-green-700/40' : 'bg-red-900/20 border-red-700/40'}`}>
+                  {submitResult.accepted ? (
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-lg text-green-300 flex items-center gap-2">
+                        <span className="text-2xl">🎉</span>
+                        Accepted
+                      </h4>
+                      <div className="space-y-2 text-sm">
+                        <p>Test Cases Passed: <span className="font-bold text-green-300">{submitResult.passedTestCases}/{submitResult.totalTestCases}</span></p>
+                        <p>Runtime: <span className="font-bold">{submitResult.runtime} sec</span></p>
+                        <p>Memory: <span className="font-bold">{submitResult.memory} KB</span></p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-lg text-red-300 flex items-center gap-2">
+                        <span className="text-2xl">❌</span>
+                        Wrong Answer
+                      </h4>
+                      <div className="space-y-2 text-sm">
+                        <p>Test Cases Passed: <span className="font-bold text-red-300">{submitResult.passedTestCases}/{submitResult.totalTestCases}</span></p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-8 text-center">
+                  <div className="text-4xl mb-4">📝</div>
+                  <p className="text-gray-400">Click "Submit" to submit your solution for evaluation.</p>
+                </div>
+              )}
             </div>
           )}
         </div>
