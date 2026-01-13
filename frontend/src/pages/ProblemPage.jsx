@@ -11,8 +11,8 @@ import toast from "react-hot-toast";
 import socket from "../socket/socket";
 import { useSelector } from 'react-redux';
 import CodeMirror from "@uiw/react-codemirror";
-import {javascript} from "@codemirror/lang-javascript";
-import {atomone} from "@uiw/codemirror-theme-atomone";
+import { javascript } from "@codemirror/lang-javascript";
+import { atomone } from "@uiw/codemirror-theme-atomone";
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -422,16 +422,14 @@ const ProblemPage = () => {
                 <div className="flex-1 bg-gray-950 min-h-[300px]">
                   {isMobile ? (
                     <>
-
-                      <CodeMirror
-                      value={code}
-                      height="calc(100vh - 180px)"
-                      extensions={[javascript()]}
-                      theme={atomone}
-                      onChange={(value)=>setCode(value)}
-                      className='text-sm'
+                      <textarea
+                        className="bg-gray-900 text-white w-full h-full p-3 font-mono text-sm outline-none resize-none"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
                       />
+
                     </>
+
 
                   ) : (<Editor
                     height="calc(100vh - 180px)"
