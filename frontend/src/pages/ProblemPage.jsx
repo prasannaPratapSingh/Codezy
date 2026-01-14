@@ -3,12 +3,13 @@ import Editor from '@monaco-editor/react';
 import { useParams } from 'react-router-dom';
 import axiosClient from "../utils/axiosClient";
 import SubmissionHistory from "../components/SubmissionHistory";
-import { BotMessageSquare, Code, FileText, Trophy, Clock, Monitor, Play, Send, Loader2 } from 'lucide-react';
+import { BotMessageSquare, Code, FileText, Trophy, Clock, Monitor, Play, Send, Loader2, MessageSquare } from 'lucide-react';
 import ChatAi from "../components/ChatAi";
 import Editorial from '../components/Editorial';
 import toast from "react-hot-toast";
 import socket from "../socket/socket";
 import { useSelector } from 'react-redux';
+import Comment from '../components/Comment';
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -133,7 +134,8 @@ const ProblemPage = () => {
     { id: 'editorial', label: 'Editorial', icon: FileText },
     { id: 'solutions', label: 'Solutions', icon: Code },
     { id: 'submissions', label: 'Submissions', icon: Trophy },
-    { id: 'generate', label: 'GENERATE', icon: BotMessageSquare }
+    { id: 'generate', label: 'GENERATE', icon: BotMessageSquare },
+    { id: 'comments', label: 'Discussion', icon: MessageSquare }
   ];
 
   const rightTabs = [
@@ -303,6 +305,15 @@ const ProblemPage = () => {
                     </div>
                   </div>
                 )}
+
+                {activeLeftTab === 'comments' && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white">Comments</h2>
+                    <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4">
+                    <Comment problemId={problemId} />
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -355,14 +366,14 @@ const ProblemPage = () => {
               </div>
 
               <div className="flex-1 bg-gray-950 overflow-hidden"> (
-                  <Editor
-                    height="100%"
-                    language={getLanguageForMonaco(selectedLanguage)}
-                    value={code}
-                    theme="vs-dark"
-                    onChange={(v) => setCode(v || '')}
-                    options={{ automaticLayout: true, wordWrap: 'on' }}
-                  />
+                <Editor
+                  height="100%"
+                  language={getLanguageForMonaco(selectedLanguage)}
+                  value={code}
+                  theme="vs-dark"
+                  onChange={(v) => setCode(v || '')}
+                  options={{ automaticLayout: true, wordWrap: 'on' }}
+                />
                 )
               </div>
 
