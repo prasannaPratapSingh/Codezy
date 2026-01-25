@@ -9,7 +9,7 @@ const generateProblem = async (req, res) => {
     const userMessage = `${difficulty}, ${topic}`;
     async function main() {
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-pro",
         temperature: 0.2,
         contents: [
           {
@@ -28,6 +28,8 @@ CRITICAL REQUIREMENTS:
 5. Create new and unique problems that have not been seen before
 6. Keeps the tag as per the topic provided by the user and it must be string and not array.
 7. Follow the provided problem creation guidelines strictly
+8. Tags must be a string and one of the following: 'array', 'linkedList', 'graph', 'dp'.
+9. input fields cannot be empty in any of the test cases.
 
 PROBLEM CREATION GUIDELINES:  
 
