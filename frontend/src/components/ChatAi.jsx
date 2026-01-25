@@ -39,7 +39,8 @@ function ProblemGenerator() {
 
             const problemData = {
                 ...json_format,
-                generatedBy: 'ai'
+                generatedBy: 'ai',
+                problemType:'fullCode'
             };
             const dbresp = await axiosClient.post('/problem/create', problemData);
             setpid(dbresp.data.probId);
