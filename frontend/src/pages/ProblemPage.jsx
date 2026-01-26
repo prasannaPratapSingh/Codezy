@@ -10,6 +10,9 @@ import toast from "react-hot-toast";
 import socket from "../socket/socket";
 import { useSelector } from 'react-redux';
 import Comment from '../components/Comment';
+import { useWindowSize } from 'react-use'
+import Confetti from 'react-confetti';
+import { set } from 'react-hook-form';
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -23,18 +26,34 @@ const ProblemPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const {width,height}=useWindowSize();
+
 
   const editorRef = useRef(null);
   const { problemId } = useParams();
   const { user } = useSelector((state) => state.auth);
 
   /* -------------------- RESPONSIVE -------------------- */
+
+  const toggleConfetti = () => {
+    setTimeout(() => {
+      setToggle(false);
+    }, (7000));
+  }
+
+  useEffect(() => {
+    toggleConfetti();
+  }, [toggle])
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+
 
   /* -------------------- FETCH PROBLEM -------------------- */
   useEffect(() => {
@@ -104,6 +123,7 @@ const ProblemPage = () => {
           problemTitle: res.data.problemTitle,
           username: user?.firstName
         });
+        setToggle(true);
       }
     } catch {
       setSubmitResult(null);
@@ -157,6 +177,13 @@ const ProblemPage = () => {
 
   return (
     <div className="h-screen bg-gradient-to-br from-black via-gray-950 to-black text-white overflow-hidden">
+      {toggle && <Confetti
+        width={width}
+        height={height}
+        colors={[
+  '#E3F2FD','#BBDEFB','#90CAF9','#64B5F6','#42A5F5','#2196F3','#1E88E5','#1976D2','#1565C0','#0D47A1','#82B1FF','#448AFF','#2979FF','#2962FF','#B3E5FC','#81D4FA','#4FC3F7'
+]}
+      />}
       <div className={`flex h-full ${isMobile ? 'flex-col' : 'flex-row'}`}>
 
         {/* ================= LEFT PANEL (QUESTION) ================= */}
@@ -310,7 +337,7 @@ const ProblemPage = () => {
                   <div className="space-y-4">
                     <h2 className="text-xl font-bold text-white">Comments</h2>
                     <div className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4">
-                    <Comment problemId={problemId} />
+                      <Comment problemId={problemId} />
                     </div>
                   </div>
                 )}
