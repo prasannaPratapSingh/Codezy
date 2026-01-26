@@ -541,23 +541,15 @@ const ProblemPage = () => {
                     <div className="space-y-4">
                       <h4 className="font-bold text-lg text-green-300 flex items-center gap-2">
                         <span className="text-2xl">🎉</span>
-                        Accepted
+                        All test cases passed!
                       </h4>
-                      <div className="space-y-2 text-sm">
-                        <p>Test Cases Passed: <span className="font-bold text-green-300">{submitResult.passedTestCases}/{submitResult.totalTestCases}</span></p>
-                        <p>Runtime: <span className="font-bold">{submitResult.runtime} sec</span></p>
-                        <p>Memory: <span className="font-bold">{submitResult.memory} KB</span></p>
-                      </div>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       <h4 className="font-bold text-lg text-red-300 flex items-center gap-2">
                         <span className="text-2xl">❌</span>
-                        Wrong Answer
+                        Some or all test cases failed.
                       </h4>
-                      <div className="space-y-2 text-sm">
-                        <p>Test Cases Passed: <span className="font-bold text-red-300">{submitResult.passedTestCases}/{submitResult.totalTestCases}</span></p>
-                      </div>
                     </div>
                   )}
                 </div>
