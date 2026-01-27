@@ -33,7 +33,7 @@ const createProblem = async (req, res) => {
       const submissions = visibleTestCases.map((testcase) => ({
         source_code: finalSourceCode,
         language_id: languageId,
-        stdin: problemType==='fullCode'?testcase.input:"",
+        stdin: testcase.input,
         expected_output: testcase.output
       }));
 
