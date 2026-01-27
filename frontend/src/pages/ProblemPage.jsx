@@ -13,6 +13,7 @@ import Comment from '../components/Comment';
 import { useWindowSize } from 'react-use'
 import Confetti from 'react-confetti';
 import { set } from 'react-hook-form';
+import { AlertCircle } from "lucide-react";
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -27,7 +28,7 @@ const ProblemPage = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const {width,height}=useWindowSize();
+  const { width, height } = useWindowSize();
 
 
   const editorRef = useRef(null);
@@ -181,8 +182,8 @@ const ProblemPage = () => {
         width={width}
         height={height}
         colors={[
-  '#E3F2FD','#BBDEFB','#90CAF9','#64B5F6','#42A5F5','#2196F3','#1E88E5','#1976D2','#1565C0','#0D47A1','#82B1FF','#448AFF','#2979FF','#2962FF','#B3E5FC','#81D4FA','#4FC3F7'
-]}
+          '#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6', '#42A5F5', '#2196F3', '#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#82B1FF', '#448AFF', '#2979FF', '#2962FF', '#B3E5FC', '#81D4FA', '#4FC3F7'
+        ]}
       />}
       <div className={`flex h-full ${isMobile ? 'flex-col' : 'flex-row'}`}>
 
@@ -391,8 +392,12 @@ const ProblemPage = () => {
                   </button>
                 ))}
               </div>
+              <div className="bg-orange-500/10 border border-orange-500/20 text-orange-700 mx-auto p-3 m-5 rounded-sm sm:flex gap-2 hidden ">
+              <AlertCircle className="h-5 w-5 text-orange-700 mt-0.5" />
+                  Please don't change the function name or signature provided in the starter code.
+              </div>
 
-              <div className="flex-1 bg-gray-950 overflow-hidden"> (
+              <div className="flex-1 bg-gray-950 overflow-hidden">
                 <Editor
                   height="100%"
                   language={getLanguageForMonaco(selectedLanguage)}
