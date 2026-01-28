@@ -258,7 +258,7 @@ const ProblemPage = () => {
                         {problem.visibleTestCases?.map((example, index) => (
                           <div
                             key={index}
-                            className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4"
+                            className="backdrop-blur-xl bg-black/20 border border-gray-700/30 rounded-xl p-4 whitespace-pre-wrap"
                           >
                             <h4 className="font-semibold mb-3 text-blue-300">
                               Example {index + 1}:
@@ -267,6 +267,7 @@ const ProblemPage = () => {
                             <div className="space-y-2 text-sm font-mono">
                               <div className="bg-gray-900/50 p-2 rounded">
                                 <strong className="text-gray-300">Input:</strong>{' '}
+                                <br />
                                 <span className="text-green-300">{example.input}</span>
                               </div>
 
