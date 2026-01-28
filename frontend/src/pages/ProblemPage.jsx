@@ -392,8 +392,8 @@ const ProblemPage = () => {
                   </button>
                 ))}
               </div>
-              <div className="bg-orange-500/10 border border-orange-500/20 text-orange-700 mx-auto p-3 m-5 rounded-sm sm:flex gap-2 hidden ">
-              <AlertCircle className="h-5 w-5 text-orange-700 mt-0.5" />
+              <div className="bg-blue-500/20 text-blue-300 border border-blue-400/30 mx-auto p-2 m-5 rounded-sm sm:flex gap-2 hidden text-sm items-center">
+              <AlertCircle className="h-5 w-5 text-blue-300 mt-0.5 " />
                   Please don't change the function name or signature provided in the starter code.
               </div>
 
