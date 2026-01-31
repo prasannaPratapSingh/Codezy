@@ -33,7 +33,7 @@ const ReportBug = () => {
             {/* Floating Report Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-blue-950 px-4 py-2 text-sm font-medium text-white shadow-lg transition hover:bg-blue-900"
+                className="fixed bottom-20 right-2 z-50 flex items-center gap-2 rounded-full bg-blue-950 px-4 py-2 text-sm font-medium text-white shadow-lg transition hover:bg-blue-900"
             >
                 <Bug size={18} />
                 <span className="hidden sm:inline">Report Bug</span>
