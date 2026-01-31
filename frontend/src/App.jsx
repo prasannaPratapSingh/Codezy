@@ -19,6 +19,7 @@ import toast, { Toaster } from "react-hot-toast"
 import socket from "./socket/socket";
 import Contest from "./pages/Contest";
 import ContestPage from "./pages/ContestPage";
+import ReportBug from "./components/ReportBug";
 
 
 
@@ -68,6 +69,7 @@ function App() {
     <>
       {/* <Navbar/> */}
       <Toaster />
+      <ReportBug />
       <Routes>
         <Route path="/actualhome" element={<ActualHome />}></Route>
         <Route path="/" element={isAuthenticated ? <Homepage></Homepage> : <Navigate to="/actualhome" />}></Route>
