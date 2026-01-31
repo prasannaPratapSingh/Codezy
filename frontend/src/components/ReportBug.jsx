@@ -13,7 +13,7 @@ const ReportBug = () => {
     const sendBug = () => {
         if (!bug.trim()) return;
 
-        emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_KEY, import.meta.env.VITE_EMAILJS_TEMPLATE_KEY, {
+        emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_ID, {
             bug,
             page: window.location.href,
             time: new Date().toLocaleString(),
