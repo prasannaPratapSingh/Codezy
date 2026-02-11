@@ -158,7 +158,7 @@ const ContestCard = ({ challenge }) => {
               </button>
             </NavLink>)
             }
-            {new Date() < new Date(endTime) ? (<button className="w-full sm:w-auto bg-gradient-to-r from-gray-900 to-black px-8 py-3 rounded-lg font-semibold shadow-lg border border-gray-700 cursor-not-allowed disabled:border-teal-300 text-zinc-500">🏆 Leaderboard
+            {new Date() < new Date(endTime) ? (<button className="w-full sm:w-auto bg-gradient-to-r from-gray-900 to-black px-8 py-3 rounded-lg font-semibold shadow-lg border border-gray-700 cursor-not-allowed disabled:border-teal-300 text-neutral-100">🏆 Leaderboard
             </button>) : (<button className="sm:w-auto bg-gradient-to-r from-gray-900 to-black px-8 py-3 rounded-lg font-semibold shadow-lg border border-gray-700 hover:cursor-pointer" onClick={() => { setShowLeader(!showLeader); leaderBoard() }}>{!showLeader?'🏆 Leaderboard':'Close Leaderboard ❌'}
             </button>)}
             <div><CountTimer time={endTime} /></div>
