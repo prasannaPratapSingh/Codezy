@@ -394,8 +394,8 @@ const ProblemPage = () => {
                 ))}
               </div>
               <div className="bg-blue-500/20 text-blue-300 border border-blue-400/30 mx-auto p-2 m-5 rounded-sm sm:flex gap-2 hidden text-sm items-center">
-              <AlertCircle className="h-5 w-5 text-blue-300 mt-0.5 " />
-                  Please don't change the function name or signature provided in the starter code.
+                <AlertCircle className="h-5 w-5 text-blue-300 mt-0.5 " />
+                Please don't change the function name or signature provided in the starter code.
               </div>
 
               <div className="flex-1 bg-gray-950 overflow-hidden">
@@ -505,18 +505,40 @@ const ProblemPage = () => {
                         Error
                       </h4>
                       <div className="space-y-3">
-                        {runResult?.testCases?.map((tc, i) => (
-                          <div key={i} className="bg-gray-900/50 p-3 rounded-lg text-xs sm:text-sm">
-                            <div className="font-mono space-y-1">
-                              <div><strong className="text-gray-300">Input:</strong> <span className="text-green-300">{tc.stdin}</span></div>
-                              <div><strong className="text-gray-300">Expected:</strong> <span className="text-blue-300">{tc.expected_output}</span></div>
-                              <div><strong className="text-gray-300">Output:</strong> <span className="text-red-300">{tc.stdout}</span></div>
-                              <div className={`font-medium ${tc.status_id === 3 ? 'text-green-400' : 'text-red-400'}`}>
-                                {tc.status_id === 3 ? '✓ Passed' : '✗ Failed'}
+                        {
+                          runResult?.testCases[0]?.status_id === 6
+                            ? <>
+                            <div>
+                              <h1>{runResult?.testCases[0]?.status?.id?.description}</h1>
+                              <div className='whitespace-pre-wrap'>
+                                {runResult?.testCases[0]?.compile_output}
                               </div>
                             </div>
-                          </div>
-                        ))}
+                            </>
+                            : runResult?.testCases?.map((tc, i) => (
+                              <div key={i} className="bg-gray-900/50 p-3 rounded-lg text-xs sm:text-sm">
+                                <div className="font-mono space-y-1">
+                                  <div>
+                                    <strong className="text-gray-300">Input:</strong>
+                                    <span className="text-green-300">{tc.stdin}</span>
+                                  </div>
+                                  <div>
+                                    <strong className="text-gray-300">Expected:</strong>
+                                    <span className="text-blue-300">{tc.expected_output}</span>
+                                  </div>
+                                  <div>
+                                    <strong className="text-gray-300">Output:</strong>
+                                    <span className="text-red-300">{tc.stdout}</span>
+                                  </div>
+                                  <div className={`font-medium ${tc.status_id === 3 ? 'text-green-400' : 'text-red-400'}`}>
+                                    {tc.status_id === 3 ? '✓ Passed' : '✗ Failed'}
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                        }
+
+
                       </div>
                     </div>
                   )}
