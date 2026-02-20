@@ -59,10 +59,9 @@ function App() {
 
 
 
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center flex-col gap-1">
+  if (!loading) {
+    return <div className="min-h-screen flex items-center justify-center">
       <span className="loading loading-spinner loading-lg"></span>
-      <h1 className="text-center p-2 text-blue-200">Spinning Up The Servers! It will take about 30s</h1>
     </div>;
   }
 
