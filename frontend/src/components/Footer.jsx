@@ -40,7 +40,7 @@ const Footer = () => {
                     <p className="text-[200px] font-bold bg-gradient-to-t from-black to-white bg-clip-text text-transparent sm:block hidden">CODEZY</p>
                 </div>
                 <p className='font-semibold text-white'>&copy; 2025 Codezy. All rights reserved</p>
-                <div className='flex gap-2'>
+                {/* <div className='flex gap-2'>
                     <p className='text-white'>Made With</p>
                     <span className='hover:cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out'>☕</span>
                     <span className='text-white'>&</span>
@@ -49,7 +49,7 @@ const Footer = () => {
                     <a href="https://www.linkedin.com/in/prasanna-pratap-singh-323238318/" target="_blank">
                         Prasanna
                     </a>
-                </div>
+                </div> */}
             </div>
         </>
     )
