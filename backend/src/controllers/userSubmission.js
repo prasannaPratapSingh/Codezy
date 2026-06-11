@@ -2,6 +2,8 @@ const Problem = require("../models/problem");
 const Submission = require("../models/submission");
 const { getLanguageById, submitBatch, submitToken } = require("../utils/problemUtility");
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const submitCode = async (req, res) => {
 
   try {
@@ -121,7 +123,7 @@ const submitCode = async (req, res) => {
 
   }
   catch (err) {
-    res.status(500).send("Internal Server Error " + err);
+    res.status(500).send(isDev ? "Internal Server Error " + err : "Internal Server Error");
   }
 }
 
@@ -207,7 +209,7 @@ const runCode = async (req, res) => {
 
   }
   catch (err) {
-    res.status(500).send("Internal Server Error " + err);
+    res.status(500).send(isDev ? "Internal Server Error " + err : "Internal Server Error");
   }
 }
 

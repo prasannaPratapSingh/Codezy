@@ -5,6 +5,8 @@ const Submission = require("../models/submission");
 const SolutionVideo = require('../models/solutionVideo');
 const redisClient = require("../config/redis");
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const createProblem = async (req, res) => {
 
   const { problemType,driverCode,
@@ -47,7 +49,7 @@ const createProblem = async (req, res) => {
 
       const testResult = await submitToken(resultToken);
 
-      console.log(testResult);
+      if (isDev) console.log(testResult);
       for (const test of testResult) {
         if (test.status_id != 3) {
           return res.status(400).send("test cases nahi paas huye");
@@ -71,7 +73,7 @@ const createProblem = async (req, res) => {
     });
   }
   catch (err) {
-    res.status(400).send("Nahi hua save db me save: " + err);
+    res.status(400).send(isDev ? "Nahi hua save db me save: " + err : "Failed to save problem");
   }
 }
 
@@ -351,7 +353,7 @@ const deleteProblem = async (req, res) => {
   }
   catch (err) {
 
-    res.status(500).send("Error: " + err);
+    res.status(500).send(isDev ? "Error: " + err : "Internal Server Error");
   }
 }
 
@@ -389,7 +391,7 @@ const getProblemById = async (req, res) => {
 
   }
   catch (err) {
-    res.status(500).send("Error: " + err);
+    res.status(500).send(isDev ? "Error: " + err : "Internal Server Error");
   }
 }
 
@@ -416,7 +418,7 @@ const getAllProblem = async (req, res) => {
     res.status(200).send(getProblem);
   }
   catch (err) {
-    res.status(500).send("Error: " + err);
+    res.status(500).send(isDev ? "Error: " + err : "Internal Server Error");
   }
 }
 

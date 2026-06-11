@@ -2,6 +2,8 @@ const Contest = require('../models/contestSchema');
 const ContestSubmission = require('../models/contestSubmissionSchema');
 const { getLanguageById, submitBatch, submitToken } = require('../utils/problemUtility');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 
 const contestCreator = async (req, res) => {
     try {
@@ -90,11 +92,11 @@ const contestCreator = async (req, res) => {
         })
 
     } catch (error) {
-        console.log('Error creating the contest', error);
+        if (isDev) console.log('Error creating the contest', error);
         res.status(500).json({
             success: false,
             message: 'Internal server error',
-            error: error.message
+            ...(isDev && { error: error.message })
         })
     }
 }
@@ -111,7 +113,7 @@ const getContest = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: "Cannot fetch the contest " + error.message
+            message: isDev ? "Cannot fetch the contest " + error.message : "Cannot fetch the contest"
         })
     }
 }
@@ -204,7 +206,7 @@ const runContestCode = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: "Internal Server Error: " + error
+            message: isDev ? "Internal Server Error: " + error : "Internal Server Error"
         })
     }
 }
@@ -302,8 +304,8 @@ const submitContestCode = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: "Internal Server Error(submission)" + error,
-            error: error.message
+            message: isDev ? "Internal Server Error(submission)" + error : "Internal Server Error",
+            ...(isDev && { error: error.message })
         })
     }
 }
@@ -348,7 +350,7 @@ const getLeaderboard = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
+        if (isDev) console.error(error);
         res.status(500).json({
             success: false,
             message: "Something went wrong while preparing the leaderboard."

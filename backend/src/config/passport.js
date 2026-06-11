@@ -52,7 +52,7 @@ passport.use(new GoogleStrategy({
 
       return done(null, user);
     } catch (err) {
-      console.error("❌ Passport Google Strategy Error:", err.message);
+      if (process.env.NODE_ENV !== 'production') console.error("❌ Passport Google Strategy Error:", err.message);
       return done(err, null);
     }
   }

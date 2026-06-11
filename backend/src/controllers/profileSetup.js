@@ -2,6 +2,8 @@ const cloudinary = require('cloudinary');
 const User = require("../models/user");
 const ProfilePicture = require('../models/profilePicture');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -124,7 +126,7 @@ const findUrl = async (req, res) => {
         });
 
     } catch (err) {
-        console.error('Error finding URL:', err);
+        if (isDev) console.error('Error finding URL:', err);
         res.status(500).json({
             error: "URL not found currently..."
         });
@@ -160,7 +162,7 @@ const deleteProfileImage = async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err); // Log the actual error for debugging
+        if (isDev) console.log(err);
         res.status(400).json({
             error: "Profile picture cannot be removed. Try after sometime..."
         });

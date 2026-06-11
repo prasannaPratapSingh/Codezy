@@ -1,6 +1,8 @@
 const express = require('express');
 const authRouter = express.Router();
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const { register, login, logout, adminRegister, deleteProfile, fetchProfile } = require('../controllers/userAuthent')
 const { fetchCommentsAll, postComment } = require('../controllers/commentController');
 const userMiddleware = require("../middleware/userMiddleware");
@@ -36,8 +38,8 @@ authRouter.get('/auth/google/callback',
             res.cookie("token", token, {
                 maxAge: 60 * 60 * 1000,
                 httpOnly: true,
-                secure: false,
-                sameSite: "Lax",
+                secure: !isDev,
+                sameSite: isDev ? 'Lax' : 'None',
             });
 
             res.redirect(process.env.CLIENT_URL || "http://localhost:5173/");

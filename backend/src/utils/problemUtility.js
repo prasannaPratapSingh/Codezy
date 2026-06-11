@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 // 👇 CHANGE THIS IF YOUR VPS IP CHANGES
 
 const getLanguageById = (lang) => {
@@ -38,7 +40,7 @@ const submitBatch = async (submissions) => {
     return response.data;
 
   } catch (error) {
-    console.error(error.response?.data || error.message);
+    if (isDev) console.error(error.response?.data || error.message);
     throw error;
   }
 };
@@ -99,7 +101,7 @@ const submitToken = async (resultToken) => {
       await waiting(1000);
 
     } catch (error) {
-      console.error(error.response?.data || error.message);
+      if (isDev) console.error(error.response?.data || error.message);
       throw error;
     }
   }

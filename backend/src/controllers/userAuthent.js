@@ -5,6 +5,16 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const Submission = require('../models/submission');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
+// Cookie options based on environment
+const getCookieOptions = () => ({
+    maxAge: 60 * 60 * 1000,
+    httpOnly: true,
+    secure: !isDev,              // true in production (HTTPS), false in dev
+    sameSite: isDev ? 'Lax' : 'None',  // 'None' needed for cross-site cookies in prod
+});
+
 
 
 
@@ -43,13 +53,7 @@ const register = async (req, res) => {
             { expiresIn: 60 * 60 }
         );
 
-        /* 🔥 LOCALHOST COOKIE SETTINGS */
-        res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: true,
-            secure: false,        // ❗ localhost
-            sameSite: "Lax",      // ❗ localhost
-        });
+        res.cookie("token", token, getCookieOptions());
 
         res.status(201).json({
             success: true,
@@ -65,6 +69,7 @@ const register = async (req, res) => {
         res.status(400).json({
             success: false,
             message: err.message || "Registration failed",
+            ...(isDev && { error: err.stack })
         });
     }
 };
@@ -99,13 +104,7 @@ const login = async (req, res) => {
             { expiresIn: 60 * 60 }
         );
 
-        /* 🔥 LOCALHOST COOKIE SETTINGS */
-        res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
-        });
+        res.cookie("token", token, getCookieOptions());
 
         res.status(200).json({
             user: {
@@ -134,8 +133,8 @@ const logout = async (req, res) => {
 
         res.clearCookie("token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
+            secure: !isDev,
+            sameSite: isDev ? 'Lax' : 'None',
         });
 
         res.send("Logged Out Successfully");
@@ -163,16 +162,11 @@ const adminRegister = async (req, res) => {
             { expiresIn: 60 * 60 }
         );
 
-        res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
-        });
+        res.cookie("token", token, getCookieOptions());
 
         res.status(201).send("Admin Registered Successfully");
     } catch (err) {
-        res.status(400).send("Error: " + err.message);
+        res.status(400).send(isDev ? "Error: " + err.message : "Registration failed");
     }
 };
 

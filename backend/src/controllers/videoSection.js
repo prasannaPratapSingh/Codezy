@@ -4,6 +4,8 @@ const User = require("../models/user");
 const SolutionVideo = require("../models/solutionVideo");
 const { sanitizeFilter } = require('mongoose');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -48,7 +50,7 @@ const generateUploadSignature = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error generating upload signature:', error);
+    if (isDev) console.error('Error generating upload signature:', error);
     res.status(500).json({ error: 'Failed to generate upload credentials' });
   }
 };
@@ -121,7 +123,7 @@ const saveVideoMetadata = async (req, res) => {
 
 
   } catch (error) {
-    console.error('Error saving video metadata:', error);
+    if (isDev) console.error('Error saving video metadata:', error);
     res.status(500).json({ error: 'Failed to save video metadata' });
   }
 };
@@ -143,7 +145,7 @@ const deleteVideo = async (req, res) => {
     res.json({ message: 'Video deleted successfully' });
 
   } catch (error) {
-    console.error('Error deleting video:', error);
+    if (isDev) console.error('Error deleting video:', error);
     res.status(500).json({ error: 'Failed to delete video' });
   }
 };

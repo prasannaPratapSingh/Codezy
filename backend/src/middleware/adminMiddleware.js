@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const redisClient = require("../config/redis")
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const adminMiddleware = async (req,res,next)=>{
 
     try{
@@ -40,7 +42,7 @@ const adminMiddleware = async (req,res,next)=>{
         next();
     }
     catch(err){
-        res.status(401).send("Error: "+ err.message)
+        res.status(401).send(isDev ? "Error: " + err.message : "Authentication failed")
     }
 
 }
