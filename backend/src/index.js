@@ -18,11 +18,16 @@ const contestRouter = require('./routes/contest');
 
 app.use(express.json());
 app.use(cookieParser());
+
+const passport = require('./config/passport');
+app.use(passport.initialize());
+
 app.use(
     cors({
         origin: [
             "https://codezy.space",
-            "https://www.codezy.space"
+            "https://www.codezy.space",
+            "http://localhost:5173"
         ],
         credentials: true
     })
@@ -35,7 +40,8 @@ const io = new Server(server, {
     cors: {
         origin: [
             "https://codezy.space",
-            "https://www.codezy.space"
+            "https://www.codezy.space",
+            "http://localhost:5173"
         ],
         methods: ["GET", "POST"],
         credentials: true

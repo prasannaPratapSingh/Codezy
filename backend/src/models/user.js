@@ -5,7 +5,7 @@ const userSchema = new Schema({
     firstName:{
         type: String,
         required: true,
-        minLength:3,
+        minLength:1,
         maxLength:20
     },
     lastName:{
@@ -40,7 +40,12 @@ const userSchema = new Schema({
     },
     password:{
         type:String,
-        required: true
+        required: function() { return !this.googleId; }
+    },
+    googleId:{
+        type:String,
+        unique: true,
+        sparse: true
     }
 },{
     timestamps:true
