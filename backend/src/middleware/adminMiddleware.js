@@ -42,7 +42,7 @@ const adminMiddleware = async (req,res,next)=>{
         next();
     }
     catch(err){
-        res.status(401).send(isDev ? "Error: " + err.message : "Authentication failed")
+        res.status(401).send(isDev ? "Error: " + err.message : "Authentication failed!")
     }
 
 }
