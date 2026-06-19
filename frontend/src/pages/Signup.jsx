@@ -180,7 +180,7 @@ function Signup() {
             </div>
 
             {/* Google Sign In */}
-            <div className="flex flex-col items-center justify-center mt-6 pt-4 border-t border-white/20">
+            {/* <div className="flex flex-col items-center justify-center mt-6 pt-4 border-t border-white/20">
               <a
                 href="http://localhost:3000/user/auth/google"
                 className="btn w-full backdrop-blur-md bg-red-600/20 border border-red-500/30 text-red-200 font-semibold hover:bg-red-600/30 hover:border-red-500/50 transition-all duration-300 shadow-lg flex items-center justify-center gap-2 rounded-full py-2.5"
@@ -190,7 +190,7 @@ function Signup() {
                 </svg>
                 Continue with Google
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
