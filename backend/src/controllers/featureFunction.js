@@ -1,12 +1,16 @@
 const jwt = require('jsonwebtoken');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const featureFunction = async (req, res) => {
     try {
         const { _id } = req.result;
-        console.log("=== DEBUG START ===");
-        console.log("Received JWT payload:", req.user);
-        console.log("specialFeature from token:", req.user.specialFeature);
-        console.log("Current usage from middleware:", req.currentUsage);
+        if (isDev) {
+            console.log("=== DEBUG START ===");
+            console.log("Received JWT payload:", req.user);
+            console.log("specialFeature from token:", req.user.specialFeature);
+            console.log("Current usage from middleware:", req.currentUsage);
+        }
         const count = req.currentUsage;
         const userData = req.result;
         const token = jwt.sign(

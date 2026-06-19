@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import axiosClient from "../utils/axiosClient";
 import toast from "react-hot-toast";
 
-
-
-
-
 const Comment = ({ problemId }) => {
     const [comment, setComment] = useState([]);
     const [typeComment, setTypeComment] = useState("");

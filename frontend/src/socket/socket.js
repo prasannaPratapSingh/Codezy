@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io('https://api.codezy.space', {
+const socket = io('http://localhost:3000', {
     autoConnect: true,
     reconnection: true,
     reconnectionDelay: 1000,

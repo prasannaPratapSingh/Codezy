@@ -160,6 +160,19 @@ function Login() {
                 </NavLink>
               </span>
             </div>
+
+            {/* Google Sign In */}
+            <div className="flex flex-col items-center justify-center mt-6 pt-4 border-t border-gray-600/30">
+              <a
+                href="http://localhost:3000/user/auth/google"
+                className="btn w-full backdrop-blur-md bg-red-600/20 border border-red-500/30 text-red-200 font-semibold hover:bg-red-600/30 hover:border-red-500/50 transition-all duration-300 shadow-lg flex items-center justify-center gap-2 rounded-full py-2.5"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.51 0-6.355-2.845-6.355-6.355s2.845-6.355 6.355-6.355c1.61 0 3.082.595 4.225 1.572l3.076-3.076C18.995 1.944 15.795 1 12.24 1c-6.075 0-11 4.925-11 11s4.925 11 11 11c6.36 0 10.9-4.47 10.9-11 0-.746-.07-1.472-.19-2.185H12.24z"/>
+                </svg>
+                Continue with Google
+              </a>
+            </div>
           </div>
         </div>
       </div>

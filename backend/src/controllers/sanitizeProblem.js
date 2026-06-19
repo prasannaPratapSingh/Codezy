@@ -1,5 +1,7 @@
 const { GoogleGenAI } = require("@google/genai");
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const sanitizeProblem = async (req, res) => {
     try {
         const rawCode = req.body.code;
@@ -43,10 +45,10 @@ STRICTLY FOLLOW THESE RULES:
         });
 
     } catch (err) {
-        console.error("Error in sanitizeProblem:", err);
+        if (isDev) console.error("Error in sanitizeProblem:", err);
         res.status(500).json({
             message: "Internal server error",
-            error: err.message
+            ...(isDev && { error: err.message })
         });
     }
 }
